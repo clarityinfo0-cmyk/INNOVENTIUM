@@ -1,0 +1,96 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    --font-syne: 'Syne', sans-serif;
+    --font-body: 'Plus Jakarta Sans', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+
+    /* Color Palette */
+    --color-primary: #0B1D36;
+    --color-secondary: #00B4D8;
+    --color-accent-1: #7B6CF6;
+    --color-accent-2: #E8C547;
+    --color-bg: #F7F9FC;
+    --color-text-dark: #1A2332;
+    --color-text-muted: #5A6A7A;
+    --color-positive: #2ECC71;
+  }
+
+  body {
+    font-family: var(--font-body);
+    background-color: var(--color-bg);
+    color: var(--color-text-dark);
+  }
+
+  h1, h2, h3, h4, .font-display {
+    font-family: var(--font-syne);
+  }
+
+  code, pre, .font-mono {
+    font-family: var(--font-mono);
+  }
+}
+
+/* Custom grid patterns matching the palette */
+.bg-light-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(11, 29, 54, 0.05) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(11, 29, 54, 0.05) 1px, transparent 1px);
+}
+
+.bg-dark-grid {
+  background-size: 32px 32px;
+  background-image: 
+    linear-gradient(to right, rgba(0, 180, 216, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(0, 180, 216, 0.08) 1px, transparent 1px);
+}
+
+.bg-dot-pattern {
+  background-size: 24px 24px;
+  background-image: radial-gradient(circle at 1px 1px, rgba(11, 29, 54, 0.08) 1.5px, transparent 0);
+}
+
+/* Custom glow effects */
+.glow-secondary {
+  box-shadow: 0 0 35px -5px rgba(0, 180, 216, 0.35);
+}
+
+.glow-accent1 {
+  box-shadow: 0 0 35px -5px rgba(123, 108, 246, 0.35);
+}
+
+.glow-accent2 {
+  box-shadow: 0 0 35px -5px rgba(232, 197, 71, 0.35);
+}
+
+.glow-positive {
+  box-shadow: 0 0 35px -5px rgba(46, 204, 113, 0.35);
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F7F9FC;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #0B1D36;
+  border-radius: 4px;
+  border: 2px solid #F7F9FC;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #00B4D8;
+}
+
+/* Selection */
+::selection {
+  background-color: rgba(0, 180, 216, 0.25);
+  color: #0B1D36;
+}
