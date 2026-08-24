@@ -106,3 +106,10 @@
   background-color: rgba(0, 180, 216, 0.25);
   color: #0B1D36;
 }
+
+/* Hide placeholder social links until verified client channels are configured. */
+a[href="https://facebook.com"],
+a[href="https://instagram.com"],
+a[href^="https://wa.me/?"] {
+  display: none;
+}
