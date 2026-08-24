@@ -19,9 +19,7 @@ export const Hero: React.FC<HeroProps> = ({ onExploreProjects, onLearnMore, onRe
           INVESTIGACIÓN · DESARROLLO · INNOVACIÓN APLICADA
         </motion.p>
         <motion.div initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8, delay: 0.1 }} className="mb-8 rounded-3xl border border-white/15 bg-[#081a30]/60 px-5 py-5 shadow-2xl backdrop-blur-sm sm:mb-10 sm:px-9 sm:py-7">
-          <InnoventiumLogo height={76} variant="full" theme="dark" animated={false} className="sm:hidden" />
-          <InnoventiumLogo height={112} variant="full" theme="dark" animated={false} className="hidden sm:inline-flex md:hidden" />
-          <InnoventiumLogo height={132} variant="full" theme="dark" animated={false} className="hidden md:inline-flex" />
+          <InnoventiumLogo height={104} variant="full" theme="dark" animated={false} className="max-w-[min(76vw,560px)]" />
         </motion.div>
         <motion.p initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.7, delay: 0.3 }} className="mb-4 text-xs font-semibold tracking-[0.2em] text-[#D9BD7B] sm:text-sm">
           INNOVACIÓN CON PROPÓSITO

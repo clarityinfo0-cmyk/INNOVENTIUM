@@ -63,8 +63,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete, isOp
 
         <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 text-center sm:px-8">
           <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8 border-b border-[#C5A059]/50 pb-5 sm:mb-10">
-            <InnoventiumLogo height={72} variant="full" theme="dark" animated={false} className="sm:hidden" />
-            <InnoventiumLogo height={94} variant="full" theme="dark" animated={false} className="hidden sm:inline-flex" />
+            <InnoventiumLogo height={82} variant="full" theme="dark" animated={false} className="max-w-[min(72vw,420px)]" />
           </motion.div>
           <AnimatePresence mode="wait">
             <motion.div key={step} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.65 }} className="max-w-3xl">
