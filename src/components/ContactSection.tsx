@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
-import confetti from 'canvas-confetti';
 import { 
   Sparkles, 
   Mail, 
@@ -29,7 +28,6 @@ export const ContactSection: React.FC = () => {
 
   const [submitted, setSubmitted] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [ticketId, setTicketId] = useState('');
 
   const projectTypes = [
     'Desarrollo I+D desde Cero',
@@ -43,25 +41,20 @@ export const ContactSection: React.FC = () => {
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsSubmitting(true);
-
-    setTimeout(() => {
-      setIsSubmitting(false);
-      setSubmitted(true);
-      const generatedId = `INV-${Math.floor(100000 + Math.random() * 900000)}`;
-      setTicketId(generatedId);
-
-      // Trigger celebration confetti
-      try {
-        confetti({
-          particleCount: 80,
-          spread: 70,
-          origin: { y: 0.6 },
-          colors: ['#00B4D8', '#7B6CF6', '#2ECC71', '#E8C547']
-        });
-      } catch (err) {
-        // Safe fallback
-      }
-    }, 900);
+    const details = [
+      `Nombre: ${formData.name.trim()}`,
+      `Organización: ${formData.organization.trim()}`,
+      `Correo: ${formData.email.trim()}`,
+      `Teléfono: ${formData.phone.trim() || 'No indicado'}`,
+      `Iniciativa: ${formData.projectType}`,
+      `Solicita NDA: ${formData.requestNDA ? 'Sí' : 'No'}`,
+      '',
+      'Descripción:',
+      formData.challengeDescription.trim(),
+    ].join('\n');
+    window.location.href = `mailto:contacto@innoventium.tech?subject=${encodeURIComponent('Consulta desde innoventium.tech')}&body=${encodeURIComponent(details)}`;
+    setIsSubmitting(false);
+    setSubmitted(true);
   };
 
   const handleReset = () => {
@@ -254,10 +247,10 @@ export const ContactSection: React.FC = () => {
               </div>
               <div>
                 <h4 className="text-sm font-bold text-white font-display mb-1">
-                  Blindaje y Confidencialidad Automática (NDA)
+                  Confidencialidad y solicitud de NDA
                 </h4>
                 <p className="text-xs text-slate-300 leading-relaxed">
-                  Toda información compartida se encuentra protegida bajo acuerdo estricto de confidencialidad y preservación de derechos de autor antes de cualquier evaluación técnica.
+                  No envíes información sensible mediante este formulario. Puedes solicitar un acuerdo de confidencialidad antes de compartir detalles técnicos con el equipo.
                 </p>
               </div>
             </div>
@@ -287,15 +280,11 @@ export const ContactSection: React.FC = () => {
                     </div>
 
                     <h3 className="font-display text-2xl sm:text-3xl font-bold text-white mb-2">
-                      ¡Solicitud Registrada Exitosamente!
+                      Consulta preparada
                     </h3>
 
-                    <p className="text-xs font-mono text-[#00B4D8] font-bold mb-4 px-3 py-1 rounded-full bg-white/5 border border-[#00B4D8]/40">
-                      ID DE CASO I+D: {ticketId}
-                    </p>
-
                     <p className="text-slate-300 text-sm sm:text-base max-w-md mx-auto mb-8 leading-relaxed">
-                      Nuestro comité técnico y legal está evaluando los requerimientos de tu proyecto. Te contactaremos en menos de 24 horas con el borrador de NDA y la propuesta de sesión exploratoria.
+                      Abrimos tu aplicación de correo con los datos de la consulta. Revísalos y envía el mensaje cuando estés listo; el sitio no almacena esta información.
                     </p>
 
                     <button
@@ -356,7 +345,8 @@ export const ContactSection: React.FC = () => {
                           type="text"
                           required
                           value={formData.name}
-                          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                          onChange={(e) => setFormData({ ...formData, name: e.target.value.slice(0, 100) })}
+                          maxLength={100}
                           placeholder="Ej: Dr. Roberto Méndez"
                           className="w-full px-4 py-2.5 rounded-xl bg-[#0B1D36] border border-white/15 text-slate-200 text-sm focus:border-[#00B4D8] focus:outline-none focus:ring-1 focus:ring-[#00B4D8] transition-all placeholder:text-slate-500"
                         />
@@ -371,7 +361,8 @@ export const ContactSection: React.FC = () => {
                           type="text"
                           required
                           value={formData.organization}
-                          onChange={(e) => setFormData({ ...formData, organization: e.target.value })}
+                          onChange={(e) => setFormData({ ...formData, organization: e.target.value.slice(0, 120) })}
+                          maxLength={120}
                           placeholder="Ej: Nexa Energy Industries"
                           className="w-full px-4 py-2.5 rounded-xl bg-[#0B1D36] border border-white/15 text-slate-200 text-sm focus:border-[#00B4D8] focus:outline-none focus:ring-1 focus:ring-[#00B4D8] transition-all placeholder:text-slate-500"
                         />
@@ -403,7 +394,8 @@ export const ContactSection: React.FC = () => {
                           id="contact-phone"
                           type="tel"
                           value={formData.phone}
-                          onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                          onChange={(e) => setFormData({ ...formData, phone: e.target.value.slice(0, 30) })}
+                          maxLength={30}
                           placeholder="+34 600 000 000"
                           className="w-full px-4 py-2.5 rounded-xl bg-[#0B1D36] border border-white/15 text-slate-200 text-sm focus:border-[#00B4D8] focus:outline-none focus:ring-1 focus:ring-[#00B4D8] transition-all placeholder:text-slate-500"
                         />
@@ -420,7 +412,8 @@ export const ContactSection: React.FC = () => {
                         required
                         rows={3}
                         value={formData.challengeDescription}
-                        onChange={(e) => setFormData({ ...formData, challengeDescription: e.target.value })}
+                        onChange={(e) => setFormData({ ...formData, challengeDescription: e.target.value.slice(0, 2500) })}
+                        maxLength={2500}
                         placeholder="Describe el reto técnico, objetivo del proyecto o impacto esperado..."
                         className="w-full px-4 py-2.5 rounded-xl bg-[#0B1D36] border border-white/15 text-slate-200 text-sm focus:border-[#00B4D8] focus:outline-none focus:ring-1 focus:ring-[#00B4D8] transition-all placeholder:text-slate-500 resize-none"
                       />

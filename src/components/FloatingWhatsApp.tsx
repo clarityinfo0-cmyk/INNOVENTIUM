@@ -9,11 +9,14 @@ interface FloatingWhatsAppProps {
 }
 
 export const FloatingWhatsApp: React.FC<FloatingWhatsAppProps> = ({
-  phoneNumber = '+5215500000000', // Configurable contact number
+  phoneNumber,
   defaultMessage = 'Hola equipo de INNOVENTIUM, me gustaría solicitar información sobre sus proyectos de I+D e innovación.',
 }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [message, setMessage] = useState(defaultMessage);
+
+  // Do not render a public contact action until the client provides a verified number.
+  if (!phoneNumber) return null;
 
   const cleanPhone = phoneNumber.replace(/[^0-9]/g, '');
   const encodedMsg = encodeURIComponent(message);

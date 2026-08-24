@@ -1,20 +1,23 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
-</div>
+# INNOVENTIUM
 
-# Run and deploy your AI Studio app
+Sitio institucional de INNOVENTIUM, construido con React, TypeScript y Vite.
 
-This contains everything you need to run your app locally.
+## Desarrollo local
 
-View your app in AI Studio: https://ai.studio/apps/df7d7a94-8ed0-45a3-a848-b2bbeb372c59
+Requiere Node.js 22 o posterior.
 
-## Run Locally
+```bash
+npm install
+npm run dev
+```
 
-**Prerequisites:**  Node.js
+## Verificación
 
+```bash
+npm run lint
+npm run build
+```
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+## Privacidad y seguridad
+
+El sitio es estático y no incluye credenciales ni servicios de backend. El formulario de contacto prepara un correo en el cliente del visitante; no almacena ni transmite la información desde el sitio. Las cabeceras de seguridad se configuran en `vercel.json`.

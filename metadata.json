@@ -2,5 +2,5 @@
   "name": "INNOVENTIUM",
   "description": "Plataforma de innovación perpetua, investigación científica y desarrollo tecnológico de alto impacto.",
   "requestFramePermissions": [],
-  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+  "majorCapabilities": []
 }
