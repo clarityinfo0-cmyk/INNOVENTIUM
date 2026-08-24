@@ -44,6 +44,21 @@
   }
 }
 
+.section-eyebrow {
+  color: #9a762e;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+
+.section-title {
+  color: #132238;
+  font-family: var(--font-syne);
+  font-size: clamp(2rem, 4vw, 3.5rem);
+  font-weight: 700;
+  line-height: 1.12;
+}
+
 /* Custom grid patterns matching the palette */
 .bg-light-grid {
   background-size: 32px 32px;
