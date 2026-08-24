@@ -2,9 +2,9 @@
 
 @layer base {
   :root {
-    --font-syne: 'Syne', sans-serif;
-    --font-body: 'Plus Jakarta Sans', sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-syne: 'Manrope', sans-serif;
+    --font-body: 'Inter', sans-serif;
+    --font-mono: 'Inter', sans-serif;
 
     /* Color Palette */
     --color-primary: #0B1D36;
@@ -21,14 +21,26 @@
     font-family: var(--font-body);
     background-color: var(--color-bg);
     color: var(--color-text-dark);
+    font-size: clamp(0.9375rem, 0.9rem + 0.15vw, 1rem);
+    line-height: 1.6;
+    text-rendering: optimizeLegibility;
   }
 
   h1, h2, h3, h4, .font-display {
     font-family: var(--font-syne);
+    letter-spacing: -0.025em;
+    font-weight: 700;
   }
 
   code, pre, .font-mono {
     font-family: var(--font-mono);
+  }
+}
+
+@media (max-width: 639px) {
+  h1, h2, h3, h4, .font-display {
+    letter-spacing: -0.02em;
+    line-height: 1.18;
   }
 }
 

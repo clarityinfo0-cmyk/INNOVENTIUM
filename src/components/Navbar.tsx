@@ -128,7 +128,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProjects, onOpenContact, o
               title="Reproducir animación 4K de apertura"
             >
               <Play className="w-3.5 h-3.5 fill-[#E8C547]" />
-              <span>Intro 4K</span>
+              <span>Presentación</span>
             </button>
           )}
 
@@ -162,7 +162,7 @@ export const Navbar: React.FC<NavbarProps> = ({ onOpenProjects, onOpenContact, o
               title="Ver animación 4K"
             >
               <Play className="w-3 h-3 fill-[#E8C547]" />
-              <span className="text-[11px] font-bold">4K</span>
+              <span className="text-[11px] font-bold">Ver</span>
             </button>
           )}
 

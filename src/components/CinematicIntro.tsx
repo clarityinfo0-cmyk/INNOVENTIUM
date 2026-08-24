@@ -1,16 +1,6 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { motion, AnimatePresence } from 'motion/react';
-import { 
-  Sparkles, 
-  Volume2, 
-  VolumeX, 
-  ArrowRight, 
-  Play, 
-  RotateCcw,
-  Zap,
-  Layers,
-  CheckCircle2
-} from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { AnimatePresence, motion } from 'motion/react';
+import { ArrowRight, X } from 'lucide-react';
 import { InnoventiumLogo } from './InnoventiumLogo';
 
 interface CinematicIntroProps {
@@ -18,462 +8,84 @@ interface CinematicIntroProps {
   isOpen: boolean;
 }
 
+const messages = [
+  { eyebrow: 'INNOVENTIUM', title: 'Ideas que se convierten en impacto.', body: 'Conectamos investigación, tecnología y estrategia para resolver retos reales.' },
+  { eyebrow: 'NUESTRO ENFOQUE', title: 'Rigor para avanzar con claridad.', body: 'Construimos soluciones con una visión responsable, medible y sostenible.' },
+  { eyebrow: 'BIENVENIDOS', title: 'Innovación aplicada con propósito.', body: 'Conoce nuestro trabajo y las oportunidades de colaboración.' },
+];
+
 export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete, isOpen }) => {
-  const [currentPhase, setCurrentPhase] = useState<number>(0);
-  const [soundEnabled, setSoundEnabled] = useState<boolean>(true);
-  const [progress, setProgress] = useState<number>(0);
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  const audioCtxRef = useRef<AudioContext | null>(null);
+  const [step, setStep] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-  // Web Audio Synthesizer for high-tech cinematic sound effects
-  const playCinematicSound = (type: 'whoosh' | 'spark' | 'chord' | 'hum') => {
-    if (!soundEnabled) return;
-    try {
-      const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-      if (!audioCtxRef.current) {
-        audioCtxRef.current = new AudioCtx();
-      }
-      const ctx = audioCtxRef.current;
-      if (ctx.state === 'suspended') {
-        ctx.resume();
-      }
-
-      const now = ctx.currentTime;
-
-      if (type === 'whoosh') {
-        // Deep low frequency sweep
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(80, now);
-        osc.frequency.exponentialRampToValueAtTime(320, now + 1.2);
-        gain.gain.setValueAtTime(0.01, now);
-        gain.gain.linearRampToValueAtTime(0.2, now + 0.4);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 1.2);
-      } else if (type === 'spark') {
-        // High-tech electric chime
-        const osc = ctx.createOscillator();
-        const gain = ctx.createGain();
-        osc.type = 'triangle';
-        osc.frequency.setValueAtTime(880, now);
-        osc.frequency.exponentialRampToValueAtTime(1760, now + 0.3);
-        gain.gain.setValueAtTime(0.15, now);
-        gain.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
-        osc.connect(gain);
-        gain.connect(ctx.destination);
-        osc.start(now);
-        osc.stop(now + 0.5);
-      } else if (type === 'chord') {
-        // Majestic major chord for the logo reveal
-        const freqs = [220, 277.18, 329.63, 440, 554.37, 659.25];
-        freqs.forEach((freq, i) => {
-          const osc = ctx.createOscillator();
-          const gain = ctx.createGain();
-          osc.type = 'sine';
-          osc.frequency.setValueAtTime(freq, now + (i * 0.04));
-          gain.gain.setValueAtTime(0.01, now);
-          gain.gain.linearRampToValueAtTime(0.08 / freqs.length, now + 0.5);
-          gain.gain.exponentialRampToValueAtTime(0.0001, now + 3.0);
-          osc.connect(gain);
-          gain.connect(ctx.destination);
-          osc.start(now);
-          osc.stop(now + 3.0);
-        });
-      }
-    } catch {
-      // Audio fallback silent
-    }
-  };
-
-  // Intro progression sequence
   useEffect(() => {
     if (!isOpen) return;
-
-    setCurrentPhase(0);
+    setStep(0);
     setProgress(0);
-
-    const totalDuration = 11000; // 11 seconds full experience
-    const interval = 50;
-    const step = (interval / totalDuration) * 100;
-
-    const progressTimer = setInterval(() => {
-      setProgress((prev) => {
-        const next = prev + step;
-        if (next >= 100) {
-          clearInterval(progressTimer);
-          return 100;
-        }
-        return next;
-      });
-    }, interval);
-
-    // Phase triggers
-    const p1 = setTimeout(() => {
-      setCurrentPhase(1);
-      playCinematicSound('whoosh');
-    }, 400);
-
-    const p2 = setTimeout(() => {
-      setCurrentPhase(2);
-      playCinematicSound('spark');
-    }, 2800);
-
-    const p3 = setTimeout(() => {
-      setCurrentPhase(3);
-      playCinematicSound('whoosh');
-    }, 5400);
-
-    const p4 = setTimeout(() => {
-      setCurrentPhase(4);
-      playCinematicSound('chord');
-    }, 7800);
-
-    const endTimer = setTimeout(() => {
-      onComplete();
-    }, 11500);
-
+    const duration = 15000;
+    const startedAt = Date.now();
+    const progressTimer = window.setInterval(() => {
+      const next = Math.min(100, ((Date.now() - startedAt) / duration) * 100);
+      setProgress(next);
+    }, 80);
+    const timers = [
+      window.setTimeout(() => setStep(1), 4800),
+      window.setTimeout(() => setStep(2), 9800),
+      window.setTimeout(onComplete, duration),
+    ];
     return () => {
-      clearInterval(progressTimer);
-      clearTimeout(p1);
-      clearTimeout(p2);
-      clearTimeout(p3);
-      clearTimeout(p4);
-      clearTimeout(endTimer);
+      window.clearInterval(progressTimer);
+      timers.forEach(window.clearTimeout);
     };
-  }, [isOpen]);
-
-  // 4K-Grade Particle Canvas Animation (Vortex, Hyperspeed light rays, Quantum Core)
-  useEffect(() => {
-    if (!isOpen) return;
-    const canvas = canvasRef.current;
-    if (!canvas) return;
-
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-
-    let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
-    let height = (canvas.height = window.innerHeight);
-
-    const handleResize = () => {
-      if (!canvas) return;
-      width = canvas.width = window.innerWidth;
-      height = canvas.height = window.innerHeight;
-    };
-    window.addEventListener('resize', handleResize);
-
-    // Particles system
-    const numParticles = Math.min(180, Math.floor((width * height) / 12000));
-    const particles: Array<{
-      x: number;
-      y: number;
-      z: number;
-      size: number;
-      color: string;
-      speedZ: number;
-      angle: number;
-      radius: number;
-    }> = [];
-
-    const colors = ['#00B4D8', '#7B6CF6', '#E8C547', '#2ECC71', '#FFFFFF'];
-
-    for (let i = 0; i < numParticles; i++) {
-      particles.push({
-        x: (Math.random() - 0.5) * width * 1.5,
-        y: (Math.random() - 0.5) * height * 1.5,
-        z: Math.random() * 1000 + 10,
-        size: Math.random() * 2.5 + 1,
-        color: colors[Math.floor(Math.random() * colors.length)],
-        speedZ: Math.random() * 4 + 2,
-        angle: Math.random() * Math.PI * 2,
-        radius: Math.random() * (Math.min(width, height) * 0.45) + 20,
-      });
-    }
-
-    let frame = 0;
-
-    const render = () => {
-      frame++;
-      ctx.fillStyle = 'rgba(11, 29, 54, 0.25)';
-      ctx.fillRect(0, 0, width, height);
-
-      const cx = width / 2;
-      const cy = height / 2;
-
-      // Draw Center Energy Nexus Glow
-      const nexusGlow = ctx.createRadialGradient(cx, cy, 5, cx, cy, Math.min(width, height) * 0.6);
-      nexusGlow.addColorStop(0, 'rgba(0, 180, 216, 0.2)');
-      nexusGlow.addColorStop(0.3, 'rgba(123, 108, 246, 0.12)');
-      nexusGlow.addColorStop(0.7, 'rgba(232, 197, 71, 0.04)');
-      nexusGlow.addColorStop(1, 'rgba(11, 29, 54, 0)');
-      ctx.fillStyle = nexusGlow;
-      ctx.fillRect(0, 0, width, height);
-
-      // Rotating Laser Geometric Rings
-      ctx.save();
-      ctx.translate(cx, cy);
-      ctx.rotate(frame * 0.003);
-
-      ctx.strokeStyle = 'rgba(0, 180, 216, 0.15)';
-      ctx.lineWidth = 1;
-      ctx.beginPath();
-      ctx.arc(0, 0, Math.min(width, height) * 0.28, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.strokeStyle = 'rgba(123, 108, 246, 0.1)';
-      ctx.beginPath();
-      ctx.arc(0, 0, Math.min(width, height) * 0.38, 0, Math.PI * 2);
-      ctx.stroke();
-
-      ctx.restore();
-
-      // Render 3D particles flying towards camera / vortex
-      for (let i = 0; i < particles.length; i++) {
-        const p = particles[i];
-
-        p.z -= p.speedZ;
-        p.angle += 0.005;
-
-        if (p.z <= 0) {
-          p.z = 1000;
-          p.x = (Math.random() - 0.5) * width * 1.5;
-          p.y = (Math.random() - 0.5) * height * 1.5;
-        }
-
-        const k = 400 / p.z;
-        const px = cx + p.x * k + Math.cos(p.angle) * 30;
-        const py = cy + p.y * k + Math.sin(p.angle) * 30;
-        const pSize = Math.max(0.5, p.size * k);
-
-        if (px >= 0 && px <= width && py >= 0 && py <= height) {
-          ctx.beginPath();
-          ctx.arc(px, py, pSize, 0, Math.PI * 2);
-          ctx.fillStyle = p.color;
-          ctx.shadowBlur = 10;
-          ctx.shadowColor = p.color;
-          ctx.fill();
-          ctx.shadowBlur = 0;
-
-          // Subtle streak trail
-          ctx.beginPath();
-          ctx.moveTo(px, py);
-          ctx.lineTo(px - (p.x * 0.02 * k), py - (p.y * 0.02 * k));
-          ctx.strokeStyle = p.color;
-          ctx.lineWidth = pSize * 0.5;
-          ctx.stroke();
-        }
-      }
-
-      animationFrameId = requestAnimationFrame(render);
-    };
-
-    render();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-      cancelAnimationFrame(animationFrameId);
-    };
-  }, [isOpen]);
+  }, [isOpen, onComplete]);
 
   if (!isOpen) return null;
+  const message = messages[step];
 
   return (
     <AnimatePresence>
-      <motion.div
-        key="cinematic-intro-modal"
+      <motion.section
+        key="brand-introduction"
         initial={{ opacity: 1 }}
-        exit={{ opacity: 0, scale: 1.05, filter: 'blur(10px)' }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="fixed inset-0 z-[9999] bg-[#0B1D36] flex flex-col justify-between overflow-hidden select-none"
+        exit={{ opacity: 0, transition: { duration: 0.55 } }}
+        className="fixed inset-0 z-[9999] flex min-h-[100svh] flex-col overflow-hidden bg-[#081a30] text-white"
+        aria-label="Presentación de Innoventium"
       >
-        {/* Background 4K Animated Canvas */}
-        <canvas 
-          ref={canvasRef} 
-          className="absolute inset-0 w-full h-full object-cover pointer-events-none z-0" 
-        />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_25%,rgba(26,100,122,0.3),transparent_38%),linear-gradient(135deg,#07182d,#0b1d36_55%,#102943)]" />
+        <div className="absolute inset-x-0 top-[18%] h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
-        {/* Top Floating Controls Bar */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-8 pt-6 sm:pt-8 flex items-center justify-between">
-          
-          {/* 4K Experience Badge */}
-          <div className="flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#0B1D36]/80 border border-[#00B4D8]/30 backdrop-blur-md text-[#00B4D8] text-[11px] font-mono shadow-[0_0_15px_rgba(0,180,216,0.2)]">
-            <span className="w-2 h-2 rounded-full bg-[#2ECC71] animate-ping" />
-            <span className="font-bold tracking-wider">4K CINEMATIC REVEAL</span>
-            <span className="text-slate-400">|</span>
-            <span className="text-slate-300">TRL 1-9 R&D</span>
-          </div>
+        <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8 sm:py-7 lg:px-12">
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-[#D9BD7B] sm:text-xs">PRESENTACIÓN</span>
+          <button onClick={onComplete} className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-3 py-2 text-xs font-medium text-slate-200 transition hover:bg-white/10" aria-label="Omitir presentación">
+            Omitir <X className="h-3.5 w-3.5" />
+          </button>
+        </header>
 
-          {/* Controls: Audio & Skip */}
-          <div className="flex items-center gap-3">
-            <button
-              onClick={() => setSoundEnabled(!soundEnabled)}
-              className="p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 hover:text-[#00B4D8] border border-white/10 transition-all cursor-pointer flex items-center gap-1.5 text-xs font-mono"
-              title={soundEnabled ? 'Silenciar audio FX' : 'Activar audio FX'}
-            >
-              {soundEnabled ? <Volume2 className="w-4 h-4 text-[#00B4D8]" /> : <VolumeX className="w-4 h-4 text-slate-400" />}
-              <span className="hidden sm:inline">{soundEnabled ? 'Audio ON' : 'Audio OFF'}</span>
-            </button>
-
-            <button
-              onClick={onComplete}
-              className="px-4 py-2 rounded-xl bg-gradient-to-r from-[#00B4D8] to-[#7B6CF6] hover:from-[#00B4D8] hover:to-[#0B1D36] text-white text-xs font-mono font-bold flex items-center gap-2 shadow-[0_0_20px_rgba(0,180,216,0.5)] transition-all cursor-pointer group"
-            >
-              <span>Entrar a la Plataforma</span>
-              <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-            </button>
-          </div>
-        </div>
-
-        {/* Central Dynamic Stage with Sequential Typography & Logo Revelation */}
-        <div className="relative z-10 w-full max-w-5xl mx-auto px-4 sm:px-6 flex flex-col items-center justify-center text-center my-auto">
-          
+        <main className="relative z-10 mx-auto flex w-full max-w-5xl flex-1 flex-col items-center justify-center px-5 text-center sm:px-8">
+          <motion.div initial={{ opacity: 0, y: 14 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.8 }} className="mb-8 border-b border-[#C5A059]/50 pb-5 sm:mb-10">
+            <InnoventiumLogo height={72} variant="full" theme="dark" animated={false} className="sm:hidden" />
+            <InnoventiumLogo height={94} variant="full" theme="dark" animated={false} className="hidden sm:inline-flex" />
+          </motion.div>
           <AnimatePresence mode="wait">
-            
-            {/* Phase 1: High Tech Domain Genesis */}
-            {currentPhase === 1 && (
-              <motion.div
-                key="intro-phase-1"
-                initial={{ opacity: 0, y: 30, scale: 0.95 }}
-                animate={{ opacity: 1, y: 0, scale: 1 }}
-                exit={{ opacity: 0, y: -30, scale: 1.05 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="space-y-4 max-w-3xl"
-              >
-                <div className="inline-flex items-center gap-2 px-4 py-1 rounded-full bg-[#00B4D8]/10 border border-[#00B4D8]/40 text-[#00B4D8] font-mono text-xs tracking-widest uppercase">
-                  <Sparkles className="w-3.5 h-3.5 animate-spin" />
-                  <span>Génesis del Conocimiento</span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                  CIENCIA APLICADA · ALTA TECNOLOGÍA · I+D DE FRONTERA
-                </h2>
-                <p className="text-slate-300 text-sm sm:text-lg font-mono text-[#00B4D8]">
-                  Iniciando protocolos de aceleración tecnológica...
-                </p>
-              </motion.div>
-            )}
-
-            {/* Phase 2: Core Axiom */}
-            {currentPhase === 2 && (
-              <motion.div
-                key="intro-phase-2"
-                initial={{ opacity: 0, scale: 0.9, filter: 'blur(6px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0, scale: 1.1, filter: 'blur(6px)' }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="space-y-6 max-w-3xl"
-              >
-                <div className="w-20 h-1 bg-[#00B4D8] mx-auto rounded-full shadow-[0_0_20px_#00B4D8]" />
-                <h2 className="font-display text-4xl sm:text-6xl md:text-7xl font-extrabold text-white tracking-tight leading-tight">
-                  La innovación no ocurre por accidente.
-                </h2>
-                <p className="font-display text-2xl sm:text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-[#00B4D8] via-[#7B6CF6] to-[#E8C547]">
-                  Se construye.
-                </p>
-              </motion.div>
-            )}
-
-            {/* Phase 3: Purpose & Impact */}
-            {currentPhase === 3 && (
-              <motion.div
-                key="intro-phase-3"
-                initial={{ opacity: 0, y: 30 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -30 }}
-                transition={{ duration: 0.8, ease: 'easeOut' }}
-                className="space-y-4 max-w-4xl"
-              >
-                <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-[#7B6CF6]/10 border border-[#7B6CF6]/40 text-[#7B6CF6] font-mono text-xs">
-                  <Zap className="w-3.5 h-3.5" />
-                  <span>TRANSFORMACIÓN SOSTENIBLE</span>
-                </div>
-                <h2 className="font-display text-3xl sm:text-5xl md:text-6xl font-extrabold text-white tracking-tight leading-tight">
-                  Transformamos conocimiento en soluciones que impulsan el futuro.
-                </h2>
-                <p className="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto">
-                  Investigación científica, desarrollo modular y blindaje de propiedad intelectual global.
-                </p>
-              </motion.div>
-            )}
-
-            {/* Phase 4: Grand Official Logo & Brand Revelation */}
-            {currentPhase === 4 && (
-              <motion.div
-                key="intro-phase-4"
-                initial={{ opacity: 0, scale: 0.85, filter: 'blur(10px)' }}
-                animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
-                exit={{ opacity: 0 }}
-                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
-                className="flex flex-col items-center justify-center space-y-6"
-              >
-                {/* Energy Ring Behind Logo */}
-                <div className="relative">
-                  <div className="absolute inset-0 bg-gradient-to-r from-[#00B4D8]/30 via-[#7B6CF6]/20 to-[#E8C547]/20 blur-3xl rounded-full scale-150 animate-pulse pointer-events-none" />
-
-                  {/* High Fidelity Official Logo Component */}
-                  <div className="p-6 sm:p-8 rounded-3xl bg-[#0B1D36]/90 border border-[#00B4D8]/40 shadow-[0_0_80px_rgba(0,180,216,0.35)] backdrop-blur-xl">
-                    <InnoventiumLogo 
-                      height={90} 
-                      variant="full" 
-                      theme="dark" 
-                      animated={true}
-                    />
-                  </div>
-                </div>
-
-                {/* Tagline & Ready Action */}
-                <motion.div 
-                  initial={{ opacity: 0, y: 15 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.4 }}
-                  className="space-y-4"
-                >
-                  <p className="text-sm sm:text-base font-mono text-slate-300">
-                    Bienvenido a la era de la <strong className="text-[#00B4D8]">Innovación Perpetua</strong>
-                  </p>
-
-                  <button
-                    onClick={onComplete}
-                    className="px-8 py-3.5 rounded-2xl bg-gradient-to-r from-[#00B4D8] via-[#7B6CF6] to-[#E8C547] text-[#0B1D36] font-bold text-sm sm:text-base flex items-center gap-2 mx-auto shadow-[0_0_35px_rgba(0,180,216,0.6)] hover:scale-105 transition-all cursor-pointer"
-                  >
-                    <span>Explorar Plataforma I+D</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </button>
-                </motion.div>
-              </motion.div>
-            )}
-
+            <motion.div key={step} initial={{ opacity: 0, y: 18 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -12 }} transition={{ duration: 0.65 }} className="max-w-3xl">
+              <p className="mb-4 text-[10px] font-semibold tracking-[0.24em] text-[#D9BD7B] sm:text-xs">{message.eyebrow}</p>
+              <h1 className="font-display text-[clamp(2.1rem,7vw,4.75rem)] font-bold leading-[1.08] text-white">{message.title}</h1>
+              <p className="mx-auto mt-5 max-w-2xl text-sm leading-relaxed text-slate-300 sm:mt-6 sm:text-lg">{message.body}</p>
+            </motion.div>
           </AnimatePresence>
+          <button onClick={onComplete} className="mt-9 inline-flex items-center gap-2 rounded-lg bg-[#C5A059] px-5 py-3 text-sm font-semibold text-[#081a30] transition hover:bg-[#dfc889] sm:mt-11">
+            Entrar al sitio <ArrowRight className="h-4 w-4" />
+          </button>
+        </main>
 
-        </div>
-
-        {/* Bottom Status Bar & Progress Indicator */}
-        <div className="relative z-20 w-full max-w-7xl mx-auto px-4 sm:px-8 pb-6 sm:pb-8 space-y-3">
-          
-          <div className="flex items-center justify-between text-xs font-mono text-slate-400">
-            <span className="flex items-center gap-2">
-              <span className="w-2 h-2 rounded-full bg-[#00B4D8]" />
-              INNOVENTIUM QUANTUM SYSTEM v3.0
-            </span>
-            <span className="text-[#00B4D8] font-bold">
-              {Math.round(progress)}%
-            </span>
+        <footer className="relative z-10 px-5 pb-6 sm:px-8 sm:pb-8 lg:px-12">
+          <div className="mx-auto flex w-full max-w-5xl items-center gap-4 text-[10px] font-medium tracking-wide text-slate-400 sm:text-xs">
+            <span className="shrink-0">{String(step + 1).padStart(2, '0')} / 03</span>
+            <div className="h-px flex-1 overflow-hidden bg-white/15"><motion.div className="h-full bg-[#C5A059]" animate={{ width: `${progress}%` }} transition={{ ease: 'linear', duration: 0.1 }} /></div>
+            <span className="hidden sm:inline">INNOVACIÓN APLICADA</span>
           </div>
-
-          {/* Glowing Multi-color Progress Bar */}
-          <div className="w-full h-1.5 bg-white/10 rounded-full overflow-hidden p-[1px]">
-            <motion.div
-              className="h-full bg-gradient-to-r from-[#00B4D8] via-[#7B6CF6] to-[#E8C547] rounded-full shadow-[0_0_15px_#00B4D8]"
-              style={{ width: `${progress}%` }}
-              transition={{ ease: 'linear' }}
-            />
-          </div>
-        </div>
-
-      </motion.div>
+        </footer>
+      </motion.section>
     </AnimatePresence>
   );
 };
