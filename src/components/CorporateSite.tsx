@@ -57,7 +57,8 @@ export const CorporateSite: React.FC = () => {
 
       <main>
         <section id="inicio" className="relative isolate overflow-hidden bg-[#0B2545] pb-20 pt-36 text-white sm:pb-28 sm:pt-44">
-          <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_78%_25%,rgba(78,139,151,0.33),transparent_28%),linear-gradient(120deg,#081b34_0%,#0b2545_60%,#123859_100%)]" />
+          <div className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,#081b34_0%,#0b2545_60%,#123859_100%)]" />
+          <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.18)_1px,transparent_1px)] [background-size:72px_72px]" />
           <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
           <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:items-end lg:px-10">
             <div className="lg:col-span-8">
@@ -74,17 +75,20 @@ export const CorporateSite: React.FC = () => {
               <p className="mt-3 text-lg leading-relaxed text-slate-200">Trabajar con claridad, responsabilidad y atención a cada detalle.</p>
             </aside>
           </div>
+          <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 border-t border-white/20 pt-5 text-xs font-medium tracking-wide text-slate-300 sm:grid-cols-3 sm:gap-8 sm:pt-6">
+            <span className="py-2 sm:py-0">Investigación con propósito</span><span className="py-2 sm:border-l sm:border-white/20 sm:pl-8 sm:py-0">Ejecución responsable</span><span className="py-2 sm:border-l sm:border-white/20 sm:pl-8 sm:py-0">Colaboración de largo plazo</span>
+          </div>
         </section>
 
         <section id="enfoque" className="scroll-mt-20 py-20 sm:py-28">
           <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-10">
             <div className="lg:col-span-5"><p className="section-eyebrow">NUESTRO ENFOQUE</p><h2 className="section-title mt-4">La innovación necesita dirección.</h2></div>
-            <div className="lg:col-span-7"><p className="max-w-2xl text-lg leading-relaxed text-slate-600">Combinamos investigación, diseño y estrategia para abordar desafíos con una mirada amplia y una ejecución precisa. Cada iniciativa parte de una necesidad concreta y se construye en colaboración.</p><div className="mt-8 grid gap-3 sm:grid-cols-2">{principles.map((item) => <div key={item} className="flex items-start gap-3 rounded-xl border border-slate-200 bg-white p-4 text-sm font-medium text-slate-700 shadow-sm"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F3F]" />{item}</div>)}</div></div>
+            <div className="lg:col-span-7"><p className="max-w-2xl text-lg leading-relaxed text-slate-600">Combinamos investigación, diseño y estrategia para abordar desafíos con una mirada amplia y una ejecución precisa. Cada iniciativa parte de una necesidad concreta y se construye en colaboración.</p><div className="mt-8 grid gap-x-8 gap-y-0 border-y border-slate-200 sm:grid-cols-2">{principles.map((item) => <div key={item} className="flex items-start gap-3 border-b border-slate-200 py-4 text-sm font-medium text-slate-700 last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F3F]" />{item}</div>)}</div></div>
           </div>
         </section>
 
         <section id="capacidades" className="scroll-mt-20 bg-white py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><div className="max-w-2xl"><p className="section-eyebrow">CAPACIDADES</p><h2 className="section-title mt-4">De la pregunta a una solución con sentido.</h2></div><div className="mt-12 grid gap-px overflow-hidden rounded-2xl border border-slate-200 bg-slate-200 md:grid-cols-3">{capabilities.map(({ icon: Icon, title, text }, index) => <article key={title} className="bg-white p-7 sm:p-8"><span className="text-sm font-semibold text-[#B38F3F]">0{index + 1}</span><Icon className="mt-9 h-7 w-7 text-[#0B3C68]" strokeWidth={1.5} /><h3 className="font-display mt-6 text-2xl font-bold">{title}</h3><p className="mt-3 leading-relaxed text-slate-600">{text}</p></article>)}</div></div>
+          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><div className="max-w-2xl"><p className="section-eyebrow">CAPACIDADES</p><h2 className="section-title mt-4">De la pregunta a una solución con sentido.</h2></div><div className="mt-12 grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-3">{capabilities.map(({ icon: Icon, title, text }, index) => <article key={title} className="bg-white p-7 transition-colors hover:bg-[#FAFBFB] sm:p-8"><span className="text-sm font-semibold text-[#B38F3F]">0{index + 1}</span><Icon className="mt-9 h-7 w-7 text-[#0B3C68]" strokeWidth={1.5} /><h3 className="font-display mt-6 text-2xl font-bold">{title}</h3><p className="mt-3 leading-relaxed text-slate-600">{text}</p></article>)}</div></div>
         </section>
 
         <section id="proceso" className="scroll-mt-20 py-20 sm:py-28">
