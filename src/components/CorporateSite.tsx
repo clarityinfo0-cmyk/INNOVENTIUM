@@ -1,106 +1,55 @@
-import React, { useState } from 'react';
-import { ArrowRight, Check, ChevronDown, Menu, X, Mail, ArrowUpRight, Lightbulb, Microscope, Network, ShieldCheck, Leaf, Scale, Building2 } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
+import { ArrowRight, ChevronRight, Mail, Menu, X } from 'lucide-react';
 import { InnoventiumLogo } from './InnoventiumLogo';
+import { ACTIVE_PROJECTS, ORG_PLACEHOLDER, type OrgNode } from '../data/siteData';
 
-const capabilities = [
-  { icon: Microscope, title: 'Investigación aplicada', text: 'Convertimos preguntas complejas en conocimiento accionable mediante metodologías rigurosas.' },
-  { icon: Lightbulb, title: 'Desarrollo tecnológico', text: 'Diseñamos y validamos soluciones con foco en utilidad, viabilidad y adopción.' },
-  { icon: Network, title: 'Innovación estratégica', text: 'Alineamos tecnología, personas y objetivos para generar valor sostenible.' },
+const navLinks = [['Inicio', 'inicio'], ['Nosotros', 'nosotros'], ['Proyectos activos', 'proyectos'], ['Innovación', 'proceso'], ['Misión y visión', 'mision-vision'], ['Contacto', 'contacto']];
+const values = [
+  ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
+  ['02', 'Excelencia', 'Elevamos el estándar técnico en cada etapa del trabajo.'],
+  ['03', 'Innovación continua', 'Aprendemos, cuestionamos y evolucionamos de forma permanente.'],
+  ['04', 'Responsabilidad', 'Asumimos el impacto humano, industrial y ambiental de lo que creamos.'],
+  ['05', 'Colaboración', 'Integramos perspectivas para construir mejores soluciones.'],
+  ['06', 'Sostenibilidad', 'Diseñamos valor duradero para las personas y el planeta.'],
 ];
+const process = ['Idea', 'Investigación', 'Desarrollo', 'Validación', 'Protección', 'Implementación'];
 
-const principles = [
-  'Rigor técnico y criterio estratégico',
-  'Colaboración cercana con cada organización',
-  'Soluciones medibles y sostenibles',
-  'Respeto por la información y la propiedad intelectual',
-];
-
-const process = [
-  ['01', 'Entendemos', 'Escuchamos el contexto, los objetivos y las restricciones del reto.'],
-  ['02', 'Diseñamos', 'Definimos una ruta de trabajo clara, viable y orientada a resultados.'],
-  ['03', 'Desarrollamos', 'Construimos, iteramos y validamos con equipos multidisciplinarios.'],
-  ['04', 'Acompañamos', 'Facilitamos la adopción y evolución de la solución en el tiempo.'],
-];
+const OrgChart: React.FC<{ nodes: OrgNode[] }> = ({ nodes }) => <div className="org-chart" aria-label="Organigrama provisional">{nodes.map((node, index) => <React.Fragment key={node.id}><div className="org-node"><span>{node.position}</span><small>{node.name ?? 'Por definir'}</small></div>{index < nodes.length - 1 && <div className="org-connector" aria-hidden="true" />}</React.Fragment>)}</div>;
 
 export const CorporateSite: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-  const goTo = (id: string) => {
-    setMenuOpen(false);
-    document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  };
+  const [scrolled, setScrolled] = useState(false);
+  useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 28); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, []);
+  const goTo = (id: string) => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
 
-  const links = [
-    ['Inicio', 'inicio'], ['Enfoque', 'enfoque'], ['Capacidades', 'capacidades'], ['Proceso', 'proceso'], ['Contacto', 'contacto'],
-  ];
+  return <div className="min-h-screen bg-[var(--background)] text-[var(--text-dark)]">
+    <header className={`site-header ${scrolled || menuOpen ? 'site-header--solid' : ''}`}>
+      <div className="site-container flex h-[76px] items-center justify-between">
+        <button onClick={() => goTo('inicio')} aria-label="Ir al inicio"><InnoventiumLogo height={38} variant="full" theme={scrolled || menuOpen ? 'light' : 'dark'} animated={false} /></button>
+        <nav className="hidden items-center gap-6 xl:flex" aria-label="Navegación principal">{navLinks.map(([name, id]) => <button key={id} onClick={() => goTo(id)} className="nav-link">{name}</button>)}</nav>
+        <button onClick={() => setMenuOpen(!menuOpen)} className="menu-button xl:hidden" aria-expanded={menuOpen} aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}>{menuOpen ? <X size={21} /> : <Menu size={21} />}</button>
+      </div>
+      {menuOpen && <nav className="mobile-nav xl:hidden" aria-label="Navegación móvil">{navLinks.map(([name, id]) => <button key={id} onClick={() => goTo(id)}>{name}</button>)}</nav>}
+    </header>
 
-  return (
-    <div className="min-h-screen overflow-x-hidden bg-[#F7F8FA] text-[#132238]">
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-slate-200/80 bg-[#F7F8FA]/95 backdrop-blur-md">
-        <div className="mx-auto flex h-20 max-w-7xl items-center justify-between px-5 sm:px-8 lg:px-10">
-          <button onClick={() => goTo('inicio')} aria-label="Ir al inicio" className="shrink-0">
-            <InnoventiumLogo height={43} variant="full" theme="light" animated={false} />
-          </button>
-          <nav className="hidden items-center gap-7 lg:flex" aria-label="Navegación principal">
-            {links.slice(0, -1).map(([name, id]) => <button key={id} onClick={() => goTo(id)} className="text-sm font-medium text-slate-600 transition hover:text-[#0B3C68]">{name}</button>)}
-            <button onClick={() => goTo('contacto')} className="rounded-lg bg-[#0B3C68] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#082f55]">Hablemos</button>
-          </nav>
-          <button onClick={() => setMenuOpen(!menuOpen)} className="rounded-lg border border-slate-300 p-2 text-[#0B3C68] lg:hidden" aria-label="Abrir menú">
-            {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
-          </button>
-        </div>
-        {menuOpen && <nav className="border-t border-slate-200 bg-[#F7F8FA] px-5 py-4 lg:hidden" aria-label="Navegación móvil">
-          <div className="mx-auto flex max-w-7xl flex-col gap-1">
-            {links.map(([name, id]) => <button key={id} onClick={() => goTo(id)} className="rounded-lg px-3 py-3 text-left text-sm font-medium text-slate-700 hover:bg-slate-200/70">{name}</button>)}
-          </div>
-        </nav>}
-      </header>
+    <main>
+      <section id="inicio" className="hero-section"><div className="hero-atmosphere" aria-hidden="true" /><div className="site-container relative z-10 flex min-h-screen items-center pt-24"><div className="max-w-4xl py-20"><p className="hero-eyebrow reveal reveal-1">CIENCIA · DESARROLLO · INNOVACIÓN</p><h1 className="hero-title reveal reveal-2">Innovación que trasciende.</h1><p className="hero-copy reveal reveal-3">Ciencia, desarrollo e innovación orientados a transformar ideas en proyectos de alto impacto.</p><div className="mt-9 flex flex-col gap-3 sm:flex-row reveal reveal-4"><button onClick={() => goTo('nosotros')} className="button button--gold">Conocer Innoventium <ArrowRight size={17} /></button><button onClick={() => goTo('proyectos')} className="button button--outline">Proyectos activos</button></div></div></div><button onClick={() => goTo('nosotros')} className="hero-scroll" aria-label="Continuar a la siguiente sección"><span /> Descubrir</button></section>
 
-      <main>
-        <section id="inicio" className="relative isolate overflow-hidden bg-[#0B2545] pb-20 pt-36 text-white sm:pb-28 sm:pt-44">
-          <div className="absolute inset-0 -z-10 bg-[linear-gradient(120deg,#081b34_0%,#0b2545_60%,#123859_100%)]" />
-          <div className="absolute inset-0 -z-10 opacity-[0.12] [background-image:linear-gradient(rgba(255,255,255,.18)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.18)_1px,transparent_1px)] [background-size:72px_72px]" />
-          <div className="absolute bottom-0 left-0 h-px w-full bg-gradient-to-r from-transparent via-[#C5A059] to-transparent" />
-          <div className="mx-auto grid max-w-7xl gap-12 px-5 sm:px-8 lg:grid-cols-12 lg:items-end lg:px-10">
-            <div className="lg:col-span-8">
-              <p className="mb-6 text-xs font-semibold tracking-[0.2em] text-[#E0C47F]">INNOVACIÓN APLICADA</p>
-              <h1 className="font-display max-w-4xl text-[clamp(2.7rem,6.5vw,5.8rem)] font-bold leading-[1.04]">Ideas rigurosas. Resultados que avanzan.</h1>
-              <p className="mt-7 max-w-2xl text-base leading-relaxed text-slate-300 sm:text-xl">INNOVENTIUM acompaña a organizaciones que buscan convertir conocimiento, tecnología y visión en soluciones relevantes.</p>
-              <div className="mt-9 flex flex-col gap-3 sm:flex-row">
-                <button onClick={() => goTo('capacidades')} className="inline-flex items-center justify-center gap-2 rounded-lg bg-[#D4AF62] px-5 py-3.5 text-sm font-semibold text-[#0B2545] transition hover:bg-[#ead28f]">Conocer capacidades <ArrowRight className="h-4 w-4" /></button>
-                <button onClick={() => goTo('contacto')} className="inline-flex items-center justify-center gap-2 rounded-lg border border-white/30 px-5 py-3.5 text-sm font-semibold text-white transition hover:bg-white/10">Iniciar una conversación</button>
-              </div>
-            </div>
-            <aside className="border-l border-white/20 pl-6 lg:col-span-4 lg:mb-2">
-              <p className="text-xs font-semibold tracking-[0.16em] text-[#E0C47F]">NUESTRO COMPROMISO</p>
-              <p className="mt-3 text-lg leading-relaxed text-slate-200">Trabajar con claridad, responsabilidad y atención a cada detalle.</p>
-            </aside>
-          </div>
-          <div className="mx-auto mt-14 grid max-w-7xl grid-cols-1 border-t border-white/20 pt-5 text-xs font-medium tracking-wide text-slate-300 sm:grid-cols-3 sm:gap-8 sm:pt-6">
-            <span className="py-2 sm:py-0">Investigación con propósito</span><span className="py-2 sm:border-l sm:border-white/20 sm:pl-8 sm:py-0">Ejecución responsable</span><span className="py-2 sm:border-l sm:border-white/20 sm:pl-8 sm:py-0">Colaboración de largo plazo</span>
-          </div>
-        </section>
+      <section id="nosotros" className="section scroll-mt-20 bg-white"><div className="site-container grid gap-12 lg:grid-cols-12 lg:gap-20"><div className="lg:col-span-5"><p className="eyebrow">INNOVENTIUM</p><h2 className="section-title mt-4">Innovación con propósito.</h2></div><div className="lg:col-span-7"><p className="lead">Somos una empresa científica orientada a la creación de innovaciones de alto impacto, el desarrollo de proyectos productivos y la generación de patentes que elevan los estándares de la industria.</p><p className="body-copy mt-5">Operamos bajo un compromiso inquebrantable con la ética, los valores humanos y el respeto por el medio ambiente, integrando ciencia, tecnología y creatividad con una visión de largo alcance.</p><div className="concept-row">{['Ciencia', 'Tecnología', 'Creatividad', 'Ética'].map((item, i) => <div key={item}><span>0{i + 1}</span>{item}</div>)}</div></div></div></section>
 
-        <section id="enfoque" className="scroll-mt-20 py-20 sm:py-28">
-          <div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-10">
-            <div className="lg:col-span-5"><p className="section-eyebrow">NUESTRO ENFOQUE</p><h2 className="section-title mt-4">La innovación necesita dirección.</h2></div>
-            <div className="lg:col-span-7"><p className="max-w-2xl text-lg leading-relaxed text-slate-600">Combinamos investigación, diseño y estrategia para abordar desafíos con una mirada amplia y una ejecución precisa. Cada iniciativa parte de una necesidad concreta y se construye en colaboración.</p><div className="mt-8 grid gap-x-8 gap-y-0 border-y border-slate-200 sm:grid-cols-2">{principles.map((item) => <div key={item} className="flex items-start gap-3 border-b border-slate-200 py-4 text-sm font-medium text-slate-700 last:border-b-0 sm:[&:nth-last-child(2)]:border-b-0"><Check className="mt-0.5 h-4 w-4 shrink-0 text-[#B38F3F]" />{item}</div>)}</div></div>
-          </div>
-        </section>
+      <section id="proyectos" className="section scroll-mt-20"><div className="site-container"><div className="max-w-2xl"><p className="eyebrow">PORTAFOLIO EN DESARROLLO</p><h2 className="section-title mt-4">Proyectos activos</h2><p className="lead mt-5">Ideas que hoy estamos convirtiendo en realidad.</p></div><div className="project-grid">{ACTIVE_PROJECTS.map(project => <article key={project.id} className="project-card"><div className="flex items-start justify-between gap-4"><InnoventiumLogo height={40} variant="emblem" theme="light" /><span>{project.category}</span></div><div><h3>{project.title}</h3><p>{project.description}</p></div><div className="project-footer"><span>{project.status}</span><ChevronRight size={18} /></div></article>)}</div></div></section>
 
-        <section id="capacidades" className="scroll-mt-20 bg-white py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><div className="max-w-2xl"><p className="section-eyebrow">CAPACIDADES</p><h2 className="section-title mt-4">De la pregunta a una solución con sentido.</h2></div><div className="mt-12 grid gap-px overflow-hidden border border-slate-200 bg-slate-200 md:grid-cols-3">{capabilities.map(({ icon: Icon, title, text }, index) => <article key={title} className="bg-white p-7 transition-colors hover:bg-[#FAFBFB] sm:p-8"><span className="text-sm font-semibold text-[#B38F3F]">0{index + 1}</span><Icon className="mt-9 h-7 w-7 text-[#0B3C68]" strokeWidth={1.5} /><h3 className="font-display mt-6 text-2xl font-bold">{title}</h3><p className="mt-3 leading-relaxed text-slate-600">{text}</p></article>)}</div></div>
-        </section>
+      <section id="proceso" className="section scroll-mt-20 bg-[var(--primary)] text-white"><div className="site-container"><p className="eyebrow eyebrow--dark">NUESTRO PROCESO</p><h2 className="section-title section-title--dark mt-4">De una idea a una innovación.</h2><div className="process-flow">{process.map((item, i) => <div key={item} className="process-step"><span>0{i + 1}</span><strong>{item}</strong></div>)}</div></div></section>
 
-        <section id="proceso" className="scroll-mt-20 py-20 sm:py-28">
-          <div className="mx-auto max-w-7xl px-5 sm:px-8 lg:px-10"><div className="flex flex-col justify-between gap-6 md:flex-row md:items-end"><div className="max-w-2xl"><p className="section-eyebrow">CÓMO TRABAJAMOS</p><h2 className="section-title mt-4">Un proceso claro para avanzar con confianza.</h2></div><p className="max-w-sm text-sm leading-relaxed text-slate-600">Adaptamos cada etapa al contexto, manteniendo siempre visibilidad sobre las decisiones y próximos pasos.</p></div><div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-4">{process.map(([number, title, text]) => <article key={number} className="border-t-2 border-[#0B3C68] pt-5"><span className="text-sm font-semibold text-[#B38F3F]">{number}</span><h3 className="font-display mt-5 text-2xl font-bold">{title}</h3><p className="mt-3 text-sm leading-relaxed text-slate-600">{text}</p></article>)}</div></div>
-        </section>
+      <section id="mision-vision" className="section scroll-mt-20 bg-white"><div className="site-container"><div className="max-w-2xl"><p className="eyebrow">RUMBO ESTRATÉGICO</p><h2 className="section-title mt-4">Propósito y horizonte.</h2></div><div className="mission-grid"><article><span>MISIÓN</span><h3>Convertir ideas en innovaciones.</h3><p>Convertir ideas en innovaciones y patentes que elevan el estándar de lo que se considera posible. Creamos soluciones de alto impacto con ciencia, tecnología y ética, orientadas al bien común y al respeto por el planeta.</p></article><article><span>VISIÓN</span><h3>Un referente internacional.</h3><p>Ser un referente internacional en investigación, desarrollo tecnológico e innovación aplicada, creando proyectos que definan una nueva generación de soluciones para el futuro.</p></article></div></div></section>
 
-        <section className="bg-[#EAF0F2] py-20 sm:py-24"><div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:items-center lg:px-10"><div className="lg:col-span-7"><p className="section-eyebrow">RELACIONES QUE PERDURAN</p><h2 className="section-title mt-4">Tecnología con criterio, colaboración con propósito.</h2></div><div className="grid gap-4 sm:grid-cols-3 lg:col-span-5"><div className="border-l border-[#B38F3F] pl-4"><ShieldCheck className="h-5 w-5 text-[#0B3C68]" /><p className="mt-3 text-sm font-semibold">Confianza</p></div><div className="border-l border-[#B38F3F] pl-4"><Scale className="h-5 w-5 text-[#0B3C68]" /><p className="mt-3 text-sm font-semibold">Responsabilidad</p></div><div className="border-l border-[#B38F3F] pl-4"><Leaf className="h-5 w-5 text-[#0B3C68]" /><p className="mt-3 text-sm font-semibold">Sostenibilidad</p></div></div></div></section>
+      <section className="section border-y border-slate-200/70"><div className="site-container"><div className="grid gap-8 md:grid-cols-2 md:items-end"><div><p className="eyebrow">ORGANIZACIÓN</p><h2 className="section-title mt-4">Nuestra estructura</h2></div><p className="lead">Una organización diseñada para transformar conocimiento en resultados.</p></div><OrgChart nodes={ORG_PLACEHOLDER} /></div></section>
 
-        <section id="contacto" className="scroll-mt-20 bg-[#0B2545] py-20 text-white sm:py-28"><div className="mx-auto grid max-w-7xl gap-10 px-5 sm:px-8 lg:grid-cols-12 lg:gap-16 lg:px-10"><div className="lg:col-span-7"><p className="text-xs font-semibold tracking-[0.2em] text-[#E0C47F]">CONTACTO</p><h2 className="font-display mt-4 max-w-3xl text-[clamp(2.35rem,5vw,4.5rem)] font-bold leading-[1.08]">Construyamos la siguiente oportunidad.</h2><p className="mt-6 max-w-xl text-lg leading-relaxed text-slate-300">Cuéntanos sobre tu desafío. Empecemos con una conversación clara y confidencial.</p></div><div className="flex flex-col justify-end lg:col-span-5"><a href="mailto:contacto@innoventium.tech" className="group rounded-xl border border-white/20 bg-white/5 p-6 transition hover:bg-white/10"><Mail className="h-6 w-6 text-[#E0C47F]" /><p className="mt-8 text-sm text-slate-300">Escríbenos a</p><p className="mt-1 flex items-center gap-2 text-lg font-semibold">contacto@innoventium.tech <ArrowUpRight className="h-4 w-4 transition group-hover:-translate-y-0.5 group-hover:translate-x-0.5" /></p></a></div></div>
-        </section>
-      </main>
-      <footer className="bg-[#081b34] py-7 text-slate-400"><div className="mx-auto flex max-w-7xl flex-col gap-3 px-5 text-xs sm:px-8 md:flex-row md:items-center md:justify-between lg:px-10"><span>© {new Date().getFullYear()} INNOVENTIUM. Todos los derechos reservados.</span><span>Investigación · Desarrollo · Innovación aplicada</span></div></footer>
-    </div>
-  );
+      <section className="section bg-white"><div className="site-container"><p className="eyebrow">NUESTRA FILOSOFÍA</p><h2 className="section-title mt-4">Principios para crear valor.</h2><div className="values-grid">{values.map(([number, title, text]) => <article key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
+
+      <section id="contacto" className="contact-section scroll-mt-20"><div className="site-container grid gap-10 lg:grid-cols-12 lg:items-end"><div className="lg:col-span-8"><p className="eyebrow eyebrow--dark">CONTACTO</p><h2>Las ideas relevantes merecen desarrollarse.</h2><p>Conversemos sobre la próxima oportunidad.</p></div><a href="mailto:contacto@innoventium.tech" className="contact-link lg:col-span-4"><Mail size={22} /><span>contacto@innoventium.tech</span><ArrowRight size={18} /></a></div></section>
+    </main>
+
+    <footer className="site-footer"><div className="site-container"><div className="footer-top"><InnoventiumLogo height={48} variant="full" theme="dark" /><div><strong>Innovación perpetua.</strong><p>El futuro comienza con las ideas que decidimos desarrollar hoy.</p></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} INNOVENTIUM</span><span>Investigación · Desarrollo · Propiedad intelectual</span></div></div></footer>
+  </div>;
 };
