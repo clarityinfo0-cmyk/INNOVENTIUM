@@ -9,9 +9,9 @@ interface CinematicIntroProps {
 }
 
 const messages = [
-  { eyebrow: 'INNOVENTIUM', title: 'Ideas que se convierten en impacto.', body: 'Conectamos investigación, tecnología y estrategia para resolver retos reales.' },
-  { eyebrow: 'NUESTRO ENFOQUE', title: 'Rigor para avanzar con claridad.', body: 'Construimos soluciones con una visión responsable, medible y sostenible.' },
-  { eyebrow: 'BIENVENIDOS', title: 'Innovación aplicada con propósito.', body: 'Conoce nuestro trabajo y las oportunidades de colaboración.' },
+  { eyebrow: 'INNOVENTIUM', title: 'La ciencia comienza con una idea.', body: 'Investigamos posibilidades capaces de transformar industrias y crear valor duradero.' },
+  { eyebrow: 'DESARROLLO', title: 'El conocimiento toma forma.', body: 'Convertimos visión, ingeniería y creatividad en proyectos de alto impacto.' },
+  { eyebrow: 'INNOVACIÓN PERPETUA', title: 'Innovación que trasciende.', body: 'Bienvenido a una organización creada para elevar el estándar de lo posible.' },
 ];
 
 export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete, isOpen }) => {
@@ -22,15 +22,15 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete, isOp
     if (!isOpen) return;
     setStep(0);
     setProgress(0);
-    const duration = 15000;
+    const duration = 10500;
     const startedAt = Date.now();
     const progressTimer = window.setInterval(() => {
       const next = Math.min(100, ((Date.now() - startedAt) / duration) * 100);
       setProgress(next);
     }, 80);
     const timers = [
-      window.setTimeout(() => setStep(1), 4800),
-      window.setTimeout(() => setStep(2), 9800),
+      window.setTimeout(() => setStep(1), 3400),
+      window.setTimeout(() => setStep(2), 6900),
       window.setTimeout(onComplete, duration),
     ];
     return () => {
@@ -55,7 +55,7 @@ export const CinematicIntro: React.FC<CinematicIntroProps> = ({ onComplete, isOp
         <div className="absolute inset-x-0 top-[18%] h-px bg-gradient-to-r from-transparent via-[#C5A059]/50 to-transparent" />
 
         <header className="relative z-10 flex items-center justify-between px-5 py-5 sm:px-8 sm:py-7 lg:px-12">
-          <span className="text-[10px] font-semibold tracking-[0.22em] text-[#D9BD7B] sm:text-xs">PRESENTACIÓN</span>
+          <span className="text-[10px] font-semibold tracking-[0.22em] text-[#D9BD7B] sm:text-xs">PRESENTACIÓN VISUAL · SIN SONIDO</span>
           <button onClick={onComplete} className="inline-flex items-center gap-2 rounded-lg border border-white/20 px-3 py-2 text-xs font-medium text-slate-200 transition hover:bg-white/10" aria-label="Omitir presentación">
             Omitir <X className="h-3.5 w-3.5" />
           </button>

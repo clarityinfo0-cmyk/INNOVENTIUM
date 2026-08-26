@@ -13,3 +13,11 @@ export const ORG_PLACEHOLDER: OrgNode[] = [
   { id: 'operaciones', position: 'Operaciones y Proyectos', parentId: 'direccion' },
 ];
 export const FUTURE_ROUTES = ['/proyectos', '/proyectos/:slug', '/patentes', '/disenos-industriales', '/equipo', '/noticias', '/admin'];
+
+// Añadir aquí los enlaces oficiales cuando el cliente los confirme.
+// Los botones permanecen ocultos mientras el valor sea null.
+export const SOCIAL_LINKS = {
+  whatsapp: null as string | null,
+  facebook: null as string | null,
+  instagram: null as string | null,
+};
