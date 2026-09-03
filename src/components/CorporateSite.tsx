@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { ArrowRight, ChevronRight, Mail, Menu, X } from 'lucide-react';
 import { InnoventiumLogo } from './InnoventiumLogo';
 import { FacebookIcon, InstagramIcon, WhatsAppIcon } from './SocialIcons';
@@ -23,6 +23,7 @@ const process = ['Idea', 'Investigación', 'Desarrollo', 'Validación', 'Protecc
 export const CorporateSite: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const orgScrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 28); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, []);
   useEffect(() => {
     const sections = document.querySelectorAll<HTMLElement>('.section, .contact-section');
@@ -37,6 +38,15 @@ export const CorporateSite: React.FC = () => {
     }, { threshold: 0.08, rootMargin: '0px 0px -8% 0px' });
     sections.forEach(section => observer.observe(section));
     return () => observer.disconnect();
+  }, []);
+  useEffect(() => {
+    const centerOrgChart = () => {
+      const viewer = orgScrollRef.current;
+      if (viewer && window.innerWidth <= 640) viewer.scrollLeft = (viewer.scrollWidth - viewer.clientWidth) / 2;
+    };
+    const frame = window.requestAnimationFrame(centerOrgChart);
+    window.addEventListener('resize', centerOrgChart);
+    return () => { window.cancelAnimationFrame(frame); window.removeEventListener('resize', centerOrgChart); };
   }, []);
   const goTo = (id: string) => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
 
@@ -61,7 +71,7 @@ export const CorporateSite: React.FC = () => {
 
       <section id="mision-vision" className="section scroll-mt-20 bg-white"><div className="site-container"><div className="max-w-2xl"><p className="eyebrow">RUMBO ESTRATÉGICO</p><h2 className="section-title mt-4">Propósito y horizonte.</h2></div><div className="mission-grid"><article><span>MISIÓN</span><h3>Convertir ideas en innovaciones.</h3><p>Convertir ideas en innovaciones y patentes que elevan el estándar de lo que se considera posible. Creamos soluciones de alto impacto con ciencia, tecnología y ética, orientadas al bien común y al respeto por el planeta.</p></article><article><span>VISIÓN</span><h3>Un referente internacional.</h3><p>Ser un referente internacional en investigación, desarrollo tecnológico e innovación aplicada, creando proyectos que definan una nueva generación de soluciones para el futuro.</p></article></div></div></section>
 
-      <section className="section org-section border-y border-slate-200/70"><div className="site-container"><div className="org-heading"><div><p className="eyebrow">ORGANIZACIÓN</p><h2 className="section-title mt-4">Nuestra estructura</h2></div><p className="lead">Una organización diseñada para transformar conocimiento en resultados.</p></div><figure className="org-visual"><div className="org-image-frame"><img src="/organigrama-innoventium.jpg" alt="Organigrama organizacional de Innoventium" loading="lazy" decoding="async" /></div><figcaption>Estructura organizacional · INNOVENTIUM</figcaption></figure></div></section>
+      <section className="section org-section border-y border-slate-200/70"><div className="site-container"><div className="org-heading"><div><p className="eyebrow">ORGANIZACIÓN</p><h2 className="section-title mt-4">Nuestra estructura</h2></div><p className="lead">Una organización diseñada para transformar conocimiento en resultados.</p></div><figure className="org-visual"><p className="org-mobile-hint">Desliza horizontalmente para conocer a todo el equipo</p><div ref={orgScrollRef} className="org-image-scroll" role="region" aria-label="Organigrama desplazable"><div className="org-image-frame"><img src="/organigrama-innoventium.jpg" alt="Organigrama organizacional de Innoventium" loading="lazy" decoding="async" /></div></div><figcaption>Estructura organizacional · INNOVENTIUM</figcaption></figure></div></section>
 
       <section className="section bg-white"><div className="site-container"><p className="eyebrow">NUESTRA FILOSOFÍA</p><h2 className="section-title mt-4">Principios para crear valor.</h2><div className="values-grid">{values.map(([number, title, text]) => <article key={title}><span>{number}</span><h3>{title}</h3><p>{text}</p></article>)}</div></div></section>
 
