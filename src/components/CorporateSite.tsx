@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { ArrowRight, ChevronRight, Mail, Menu, X } from 'lucide-react';
+import { ArrowRight, ChevronRight, Mail, Menu, Play, X } from 'lucide-react';
 import { InnoventiumLogo } from './InnoventiumLogo';
 import { FacebookIcon, InstagramIcon, WhatsAppIcon } from './SocialIcons';
 import { ACTIVE_PROJECTS } from '../data/siteData';
@@ -9,7 +9,48 @@ const INSTAGRAM_URL = 'https://www.instagram.com/innoventiumlm/';
 const WHATSAPP_MESSAGE = 'Hola equipo de INNOVENTIUM, me gustaría recibir más información sobre sus servicios y proyectos de innovación. ¿Podrían orientarme?';
 const WHATSAPP_URL = `https://wa.me/526681830486?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
-const navLinks = [['Inicio', 'inicio'], ['Nosotros', 'nosotros'], ['Proyectos activos', 'proyectos'], ['Innovación', 'proceso'], ['Misión y visión', 'mision-vision'], ['Contacto', 'contacto']];
+const navLinks = [['Inicio', 'inicio'], ['Nosotros', 'nosotros'], ['Proyectos activos', 'proyectos'], ['Impulsores', 'impulsores'], ['Innovación', 'proceso'], ['Misión y visión', 'mision-vision'], ['Contacto', 'contacto']];
+interface AthleticSupporter {
+  id: string;
+  name: string;
+  alias?: string;
+  role: string;
+  image: string;
+  record: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
+  performance: { label: string; value: string }[];
+  identity: { label: string; value: string }[];
+  videoUrl?: string;
+}
+
+const athleticSupporters: AthleticSupporter[] = [{
+  id: 'luis-angel-castillo-soto',
+  name: 'Luis Ángel Castillo Soto',
+  alias: 'Flechita',
+  role: 'Boxeador profesional',
+  image: '/luis-angel-castillo-profile.png',
+  record: [
+    { value: '23', label: '15 KOs', tone: 'win' },
+    { value: '2', label: '1 KO', tone: 'loss' },
+    { value: '1', label: 'Empate', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso supermosca' },
+    { label: 'Combates', value: '26 · 125 rounds' },
+    { label: 'KOs', value: '65.22%' },
+    { label: 'Carrera', value: '2014–2026' },
+    { label: 'Debut', value: '11 abril 2014' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '686979' },
+    { label: 'Nombre', value: 'Luis Ángel Castillo Soto' },
+    { label: 'Alias', value: 'Flechita' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Guardia', value: 'Zurdo' },
+    { label: 'Estatura', value: '167 cm' },
+    { label: 'Alcance', value: '168 cm' },
+    { label: 'Residencia', value: 'Ahome, Sinaloa' },
+  ],
+}];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
   ['02', 'Excelencia', 'Elevamos el estándar técnico en cada etapa del trabajo.'],
@@ -67,6 +108,8 @@ export const CorporateSite: React.FC = () => {
 
       <section id="proyectos" className="section scroll-mt-20"><div className="site-container"><div className="section-marker"><span>02</span><p>PORTAFOLIO</p></div><div className="project-heading"><div><p className="eyebrow">EN DESARROLLO</p><h2 className="section-title mt-4">Proyectos activos</h2></div><p className="lead">Ideas que hoy estamos convirtiendo en realidad.</p></div><div className="project-grid">{ACTIVE_PROJECTS.map((project, index) => <article key={project.id} className="project-card"><span className="project-number">0{index + 1}</span><div className="flex items-start justify-between gap-4"><InnoventiumLogo height={44} variant="emblem" theme="light" /><span>{project.category}</span></div><div><h3>{project.title}</h3><p>{project.description}</p></div><div className="project-footer"><span>{project.status}</span><span className="project-arrow"><ChevronRight size={18} /></span></div></article>)}</div></div></section>
 
+      <section id="impulsores" className="section supporters-section scroll-mt-20"><div className="site-container"><div className="supporters-heading"><div><p className="eyebrow">PROYECTO DEPORTIVO</p><h2 className="section-title mt-4">Profesionales que impulsan una visión.</h2></div><p className="lead">Trayectorias que aportan experiencia, confianza y respaldo a una iniciativa mexicana con visión de futuro.</p></div><div className="supporters-intro"><p>En INNOVENTIUM expresamos nuestro más profundo agradecimiento y reconocimiento a cada profesional que nos acompaña en esta etapa inicial. Con humildad y respeto, valoramos que su rostro, trayectoria y legado formen parte de nuestro proyecto, avalando con su experiencia y visión lo que estamos construyendo.</p><details><summary>Leer reconocimiento completo</summary><div><p>Este proyecto deportivo, nacido de raíces mexicanas y con visión corporativa de futuro, busca revolucionar el deporte y transformar la vida de miles de personas y familias. Su apoyo fortalece nuestra iniciativa y se convierte en el impulso que nos permite avanzar con mayor firmeza hacia la meta.</p><p>Detrás de cada profesional hay años de esfuerzo, disciplina y pasión. Ese legado, que ya inspira a generaciones, respalda una iniciativa orientada a generar empleos, oportunidades y un cambio positivo en la sociedad.</p><p>Su colaboración es un acto de altruismo y visión: un apoyo que no espera nada a cambio, pero que deja huella. INNOVENTIUM se honra en contar con ustedes como impulsores de un sueño que comienza a hacerse realidad.</p></div></details></div><div className="supporters-list" aria-label="Profesionales que respaldan el proyecto deportivo">{athleticSupporters.map(supporter => <article key={supporter.id} className="supporter-profile"><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className="supporter-media"><img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width="1024" height="1280" /><span>IMPULSOR INNOVENTIUM</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>)}</div><p className="supporters-note">La colección está preparada para crecer de forma ordenada conforme deportistas y comunicadores autoricen sus perfiles.</p></div></section>
+
       <section id="proceso" className="section scroll-mt-20 bg-[var(--primary)] text-white"><div className="site-container"><p className="eyebrow eyebrow--dark">NUESTRO PROCESO</p><h2 className="section-title section-title--dark mt-4">De una idea a una innovación.</h2><div className="process-flow">{process.map((item, i) => <div key={item} className="process-step"><span>0{i + 1}</span><strong>{item}</strong></div>)}</div></div></section>
 
       <section id="mision-vision" className="section scroll-mt-20 bg-white"><div className="site-container"><div className="max-w-2xl"><p className="eyebrow">RUMBO ESTRATÉGICO</p><h2 className="section-title mt-4">Propósito y horizonte.</h2></div><div className="mission-grid"><article><span>MISIÓN</span><h3>Convertir ideas en innovaciones.</h3><p>Convertir ideas en innovaciones y patentes que elevan el estándar de lo que se considera posible. Creamos soluciones de alto impacto con ciencia, tecnología y ética, orientadas al bien común y al respeto por el planeta.</p></article><article><span>VISIÓN</span><h3>Un referente internacional.</h3><p>Ser un referente internacional en investigación, desarrollo tecnológico e innovación aplicada, creando proyectos que definan una nueva generación de soluciones para el futuro.</p></article></div></div></section>
@@ -81,4 +124,3 @@ export const CorporateSite: React.FC = () => {
     <footer className="site-footer"><div className="site-container"><div className="footer-top"><InnoventiumLogo height={48} variant="full" theme="dark" /><div><strong>Innovación perpetua.</strong><p>El futuro comienza con las ideas que decidimos desarrollar hoy.</p></div></div><div className="footer-bottom"><span>© {new Date().getFullYear()} INNOVENTIUM</span><span>Investigación · Desarrollo · Propiedad intelectual</span></div></div></footer>
   </div>;
 };
-
