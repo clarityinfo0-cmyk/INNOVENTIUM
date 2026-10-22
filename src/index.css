@@ -81,6 +81,8 @@ button { cursor:pointer; }
 .concept-row span { display:block; margin-bottom:5px; color:#a58439; font-size:.68rem; }
 .project-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:1px; margin-top:56px; padding:1px; background:#dfe5eb; }
 .project-card { position:relative; display:flex; min-height:370px; flex-direction:column; justify-content:space-between; padding:34px; overflow:hidden; background:white; transition:transform .55s ease,background-color .55s ease,box-shadow .55s ease; }
+.project-card--interactive { width:100%; border:0; color:inherit; font:inherit; text-align:left; cursor:pointer; }
+.project-card--interactive:focus-visible { z-index:3; outline:3px solid rgba(0,180,216,.55); outline-offset:-3px; }
 .project-card::after { content:""; position:absolute; inset:auto 0 0; height:3px; background:linear-gradient(90deg,#c5a059,#00b4d8); transform:scaleX(0); transform-origin:left; transition:transform .55s ease; }
 .project-card:hover { z-index:2; transform:translateY(-6px); background:#fbfcfd; box-shadow:0 24px 60px rgba(11,29,54,.1); }
 .project-card:hover::after { transform:scaleX(1); }
