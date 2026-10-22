@@ -9,7 +9,7 @@ const INSTAGRAM_URL = 'https://www.instagram.com/innoventiumlm/';
 const WHATSAPP_MESSAGE = 'Hola equipo de INNOVENTIUM, me gustaría recibir más información sobre sus servicios y proyectos de innovación. ¿Podrían orientarme?';
 const WHATSAPP_URL = `https://wa.me/526681830486?text=${encodeURIComponent(WHATSAPP_MESSAGE)}`;
 
-const navLinks = [['Inicio', 'inicio'], ['Nosotros', 'nosotros'], ['Proyectos activos', 'proyectos'], ['Impulsores', 'impulsores'], ['Innovación', 'proceso'], ['Misión y visión', 'mision-vision'], ['Contacto', 'contacto']];
+const navLinks = [['Inicio', 'inicio'], ['Nosotros', 'nosotros'], ['Proyectos activos', 'proyectos'], ['Innovación', 'proceso'], ['Misión y visión', 'mision-vision'], ['Contacto', 'contacto']];
 interface AthleticSupporter {
   id: string;
   name: string;
@@ -19,6 +19,9 @@ interface AthleticSupporter {
   record: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
+  summary?: string;
+  achievements?: string[];
+  communityWork?: string;
   videoUrl?: string;
 }
 
@@ -50,6 +53,38 @@ const athleticSupporters: AthleticSupporter[] = [{
     { label: 'Alcance', value: '168 cm' },
     { label: 'Residencia', value: 'Ahome, Sinaloa' },
   ],
+}, {
+  id: 'carlos-araujo-arellano',
+  name: 'Carlos Araujo Arellano',
+  alias: 'El Príncipe',
+  role: 'Boxeador profesional · Conferencista motivacional',
+  image: '/carlos-araujo-profile-light.png',
+  record: [
+    { value: '15', label: 'Victorias', tone: 'win' },
+    { value: '1', label: 'Derrota', tone: 'loss' },
+    { value: '0', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'Récord', value: '15–1–0 · 12 KO (80%)' },
+    { label: 'Combates', value: '16 · 41 rounds' },
+    { label: 'División', value: 'Peso pluma' },
+    { label: 'Carrera', value: '2010–2019 · debut 17 abril 2010' },
+    { label: 'Estatus', value: 'Inactivo' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '530820' },
+    { label: 'Nombre', value: 'Carlos Araujo Arellano' },
+    { label: 'Apodo', value: 'El Príncipe' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Residencia', value: 'Los Mochis, Sinaloa, México' },
+    { label: 'Lugar de nacimiento', value: 'Los Mochis, Sinaloa, México' },
+  ],
+  summary: 'Boxeador profesional originario de Los Mochis, Sinaloa. Comparte su experiencia para inspirar a jóvenes y familias mediante conferencias motivacionales y labor altruista.',
+  achievements: [
+    'Campeón Latino Peso Pluma · CMB / WBC',
+    'Campeón Latino Peso Superpluma · CMB / WBC',
+  ],
+  communityWork: 'Conferencias para jóvenes y comunidades sobre prevención de adicciones, disciplina y superación personal; promueve el deporte como herramienta de transformación social.',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -61,9 +96,36 @@ const values = [
 ];
 const process = ['Idea', 'Investigación', 'Desarrollo', 'Validación', 'Protección', 'Implementación'];
 
+const supporterRecognition = [
+  'En Innoventium, expresamos nuestro más profundo agradecimiento y reconocimiento a cada uno de los profesionales que hoy nos acompañan en esta etapa inicial. Con humildad y respeto, valoramos enormemente que hayan permitido que su rostro, trayectoria y legado formen parte de nuestro proyecto, avalando con su experiencia y visión lo que estamos construyendo.',
+  'Este proyecto deportivo, nacido de raíces mexicanas y con visión corporativa de futuro, busca revolucionar el deporte y transformar la vida de miles de personas y familias. Su apoyo no solo fortalece nuestra iniciativa, sino que se convierte en el impulso que nos permitirá avanzar con mayor firmeza y velocidad hacia la meta.',
+  'Sabemos que detrás de cada uno de ustedes hay años de esfuerzo, disciplina y pasión, ya sea en el campo deportivo, en los medios de comunicación o en ambos. Ese legado, que ya inspira a generaciones, también respalda un proyecto que pretende generar miles de empleos, oportunidades y un cambio positivo en la sociedad.',
+  'Su colaboración es un acto de altruismo y visión: un apoyo que no espera nada a cambio, pero que deja huella. Gracias a ustedes, este proyecto no solo se valida, sino que se proyecta como una iniciativa con enorme potencial y futuro.',
+  'Hoy, Innoventium se honra en contar con ustedes como impulsores de un sueño que comienza a hacerse realidad. Su nombre y su trayectoria quedarán ligados a este esfuerzo, y el reconocimiento será tan grande como el impacto que juntos lograremos.',
+];
+
+const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const supporter = athleticSupporters[activeIndex];
+  const showPrevious = () => setActiveIndex(index => (index - 1 + athleticSupporters.length) % athleticSupporters.length);
+  const showNext = () => setActiveIndex(index => (index + 1) % athleticSupporters.length);
+
+  return <section id="impulsores" hidden={!isOpen} aria-hidden={!isOpen} className="section supporters-section scroll-mt-20"><div className="site-container">
+    <div className="supporters-heading"><div><p className="eyebrow">PROYECTO DEPORTIVO</p><h2 className="section-title mt-4">Profesionales que impulsan una visión.</h2></div><p className="lead">Trayectorias que aportan experiencia, confianza y respaldo a una iniciativa mexicana con visión de futuro.</p></div>
+    <div className="supporter-showcase">
+      <aside className="supporter-recognition"><p className="eyebrow">UN RECONOCIMIENTO A SU TRAYECTORIA</p><h3>Gracias por impulsar este proyecto.</h3>{supporterRecognition.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</aside>
+      <div className="supporter-viewer">
+        <div className="supporter-navigation"><button type="button" className="supporter-nav-button" onClick={showPrevious} aria-label="Ver deportista anterior">Anterior</button><span aria-live="polite">{activeIndex + 1} / {athleticSupporters.length}</span><button type="button" className="supporter-nav-button supporter-nav-button--next" onClick={showNext} aria-label="Ver siguiente deportista">Siguiente <ChevronRight size={17} /></button></div>
+        <article key={supporter.id} className="supporter-profile" aria-label={`Perfil de ${supporter.name}`}><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}`}>{supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width="300" height="388" /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}<span>IMPULSOR DEL PROYECTO DEPORTIVO</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}{supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}{supporter.communityWork && <div className="supporter-community"><strong>Labor social</strong><p>{supporter.communityWork}</p></div>}{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>
+      </div>
+    </div>
+  </div></section>;
+};
+
 export const CorporateSite: React.FC = () => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const [supportersOpen, setSupportersOpen] = useState(false);
   const orgScrollRef = useRef<HTMLDivElement>(null);
   useEffect(() => { const onScroll = () => setScrolled(window.scrollY > 28); onScroll(); window.addEventListener('scroll', onScroll, { passive: true }); return () => window.removeEventListener('scroll', onScroll); }, []);
   useEffect(() => {
@@ -89,7 +151,7 @@ export const CorporateSite: React.FC = () => {
     window.addEventListener('resize', centerOrgChart);
     return () => { window.cancelAnimationFrame(frame); window.removeEventListener('resize', centerOrgChart); };
   }, []);
-  const goTo = (id: string) => { setMenuOpen(false); document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
+  const goTo = (id: string) => { setMenuOpen(false); if (id === 'impulsores') { setSupportersOpen(true); window.setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }), 40); return; } document.getElementById(id)?.scrollIntoView({ behavior: 'smooth', block: 'start' }); };
 
   return <div className="min-h-screen bg-[var(--background)] text-[var(--text-dark)]">
     <header className={`site-header ${scrolled || menuOpen ? 'site-header--solid' : ''}`}>
@@ -108,7 +170,7 @@ export const CorporateSite: React.FC = () => {
 
       <section id="proyectos" className="section scroll-mt-20"><div className="site-container"><div className="section-marker"><span>02</span><p>PORTAFOLIO</p></div><div className="project-heading"><div><p className="eyebrow">EN DESARROLLO</p><h2 className="section-title mt-4">Proyectos activos</h2></div><p className="lead">Ideas que hoy estamos convirtiendo en realidad.</p></div><div className="project-grid">{ACTIVE_PROJECTS.map((project, index) => { const content = <><span className="project-number">0{index + 1}</span><div className="flex items-start justify-between gap-4"><InnoventiumLogo height={44} variant="emblem" theme="light" /><span>{project.category}</span></div><div><h3>{project.title}</h3><p>{project.description}</p></div><div className="project-footer"><span>{project.id === 'deportivo' ? 'Conocer impulsores' : project.status}</span><span className="project-arrow"><ChevronRight size={18} /></span></div></>; return project.id === 'deportivo' ? <button key={project.id} type="button" className="project-card project-card--interactive" onClick={() => goTo('impulsores')} aria-label="Conocer a los impulsores del proyecto deportivo">{content}</button> : <article key={project.id} className="project-card">{content}</article>; })}</div></div></section>
 
-      <section id="impulsores" className="section supporters-section scroll-mt-20"><div className="site-container"><div className="supporters-heading"><div><p className="eyebrow">PROYECTO DEPORTIVO</p><h2 className="section-title mt-4">Profesionales que impulsan una visión.</h2></div><p className="lead">Trayectorias que aportan experiencia, confianza y respaldo a una iniciativa mexicana con visión de futuro.</p></div><div className="supporters-intro"><p>En INNOVENTIUM expresamos nuestro más profundo agradecimiento y reconocimiento a cada profesional que nos acompaña en esta etapa inicial. Con humildad y respeto, valoramos que su rostro, trayectoria y legado formen parte de nuestro proyecto, avalando con su experiencia y visión lo que estamos construyendo.</p><details><summary>Leer reconocimiento completo</summary><div><p>Este proyecto deportivo, nacido de raíces mexicanas y con visión corporativa de futuro, busca revolucionar el deporte y transformar la vida de miles de personas y familias. Su apoyo fortalece nuestra iniciativa y se convierte en el impulso que nos permite avanzar con mayor firmeza hacia la meta.</p><p>Detrás de cada profesional hay años de esfuerzo, disciplina y pasión. Ese legado, que ya inspira a generaciones, respalda una iniciativa orientada a generar empleos, oportunidades y un cambio positivo en la sociedad.</p><p>Su colaboración es un acto de altruismo y visión: un apoyo que no espera nada a cambio, pero que deja huella. INNOVENTIUM se honra en contar con ustedes como impulsores de un sueño que comienza a hacerse realidad.</p></div></details></div><div className="supporters-list" aria-label="Profesionales que respaldan el proyecto deportivo">{athleticSupporters.map(supporter => <article key={supporter.id} className="supporter-profile"><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className="supporter-media"><img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width="1024" height="1280" /><span>IMPULSOR DEL PROYECTO DEPORTIVO</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>)}</div><p className="supporters-note">La colección está preparada para crecer de forma ordenada conforme deportistas y comunicadores autoricen sus perfiles.</p></div></section>
+      <SupportersSection isOpen={supportersOpen} />
 
       <section id="proceso" className="section scroll-mt-20 bg-[var(--primary)] text-white"><div className="site-container"><p className="eyebrow eyebrow--dark">NUESTRO PROCESO</p><h2 className="section-title section-title--dark mt-4">De una idea a una innovación.</h2><div className="process-flow">{process.map((item, i) => <div key={item} className="process-step"><span>0{i + 1}</span><strong>{item}</strong></div>)}</div></div></section>
 
