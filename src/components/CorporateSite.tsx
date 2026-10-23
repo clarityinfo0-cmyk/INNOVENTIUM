@@ -21,7 +21,9 @@ interface AthleticSupporter {
   identity: { label: string; value: string }[];
   summary?: string;
   achievements?: string[];
-  communityWork?: string;
+  communityWork?: string[];
+  socialValues?: string[];
+  currentObjective?: string;
   videoUrl?: string;
 }
 
@@ -57,34 +59,40 @@ const athleticSupporters: AthleticSupporter[] = [{
   id: 'carlos-araujo-arellano',
   name: 'Carlos Araujo Arellano',
   alias: 'El Príncipe',
-  role: 'Boxeador profesional · Conferencista motivacional',
+  role: 'Boxeador profesional · Campeón Latino CMB · Conferencista motivacional · Promotor social',
   image: '/carlos-araujo-championship.jpg',
   record: [
-    { value: '15', label: 'Victorias', tone: 'win' },
+    { value: '19', label: '16 KO', tone: 'win' },
     { value: '1', label: 'Derrota', tone: 'loss' },
     { value: '0', label: 'Empates', tone: 'draw' },
   ],
   performance: [
-    { label: 'Récord', value: '15–1–0 · 12 KO (80%)' },
-    { label: 'Combates', value: '16 · 41 rounds' },
-    { label: 'División', value: 'Peso pluma' },
-    { label: 'Carrera', value: '2010–2019 · debut 17 abril 2010' },
-    { label: 'Estatus', value: 'Inactivo' },
+    { label: 'Récord profesional', value: '19 victorias · 1 derrota · 16 KO (84%)' },
+    { label: 'Peleas profesionales', value: '20' },
+    { label: 'Trayectoria deportiva', value: '19 años · 11 como profesional' },
+    { label: 'Títulos', value: 'Campeón Latino CMB en dos divisiones' },
   ],
   identity: [
-    { label: 'ID deportivo', value: '530820' },
-    { label: 'Nombre', value: 'Carlos Araujo Arellano' },
-    { label: 'Apodo', value: 'El Príncipe' },
-    { label: 'Nacionalidad', value: 'México' },
-    { label: 'Residencia', value: 'Los Mochis, Sinaloa, México' },
-    { label: 'Lugar de nacimiento', value: 'Los Mochis, Sinaloa, México' },
+    { label: 'Edad', value: '31 años' },
+    { label: 'Origen', value: 'Los Mochis, Sinaloa, México' },
+    { label: 'Estatura', value: '1.72 m' },
+    { label: 'Guardia', value: 'Derecha' },
+    { label: 'División', value: 'Peso Pluma / Súper Pluma' },
   ],
-  summary: 'Boxeador profesional originario de Los Mochis, Sinaloa. Comparte su experiencia para inspirar a jóvenes y familias mediante conferencias motivacionales y labor altruista.',
+  summary: 'Boxeador profesional originario de Los Mochis, Sinaloa, con 19 años de trayectoria en el deporte. Ejemplo de disciplina, resiliencia y superación. Campeón Latino del Consejo Mundial de Boxeo en dos divisiones. Hoy canaliza su experiencia en el ring hacia la transformación social, inspirando a jóvenes y familias a través de conferencias motivacionales y labor altruista.',
   achievements: [
     'Campeón Latino Peso Pluma · CMB / WBC',
     'Campeón Latino Peso Superpluma · CMB / WBC',
+    'Reconocido por su pegada contundente en el norte del país.',
   ],
-  communityWork: 'Conferencias para jóvenes y comunidades sobre prevención de adicciones, disciplina y superación personal; promueve el deporte como herramienta de transformación social.',
+  communityWork: [
+    'Mi carrera no termina en el ring. Mi compromiso es con mi gente.',
+    'Conferencista para jóvenes: pláticas en escuelas, centros de rehabilitación y comunidades vulnerables sobre prevención de adicciones, disciplina y cómo salir adelante a través del deporte, con enfoque en Los Mochis y Sinaloa.',
+    'Conferencista de superación personal: comparte herramientas de resiliencia, manejo de la derrota, disciplina, salud mental y valor del esfuerzo.',
+    'Promotor del deporte como herramienta de transformación social: impulsa iniciativas para acercar a los jóvenes al deporte y generar oportunidades y empleos.',
+  ],
+  socialValues: ['Disciplina', 'Humildad', 'Respeto', 'Trabajo en equipo', 'Resiliencia', 'Altruismo', 'Orgullo mexicano'],
+  currentObjective: 'Poner su imagen, trayectoria y legado al servicio de proyectos que generen un impacto positivo, empleos y oportunidades para la sociedad mexicana, inspirando a las nuevas generaciones a creer que sí se puede.',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -118,7 +126,7 @@ const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       <aside className="supporter-recognition"><p className="eyebrow">UN RECONOCIMIENTO A SU TRAYECTORIA</p><h3>Gracias por impulsar este proyecto.</h3>{supporterRecognition.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</aside>
       <div className="supporter-viewer">
         <div className="supporter-navigation"><button type="button" className="supporter-nav-button supporter-nav-button--previous" onClick={showPrevious} aria-label={`Ver perfil anterior: ${previousSupporter.name}`}><small>Impulsor anterior</small><strong>{previousSupporter.name}</strong></button><span aria-live="polite">{activeIndex + 1} / {athleticSupporters.length}</span><button type="button" className="supporter-nav-button supporter-nav-button--next" onClick={showNext} aria-label={`Ver siguiente impulsor: ${nextSupporter.name}`}><small>Siguiente impulsor</small><strong>{nextSupporter.name}</strong><ChevronRight size={17} /></button></div>
-        <article key={supporter.id} className="supporter-profile" aria-label={`Perfil de ${supporter.name}`}><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}${supporter.id === 'carlos-araujo-arellano' ? ' supporter-media--wide' : ''}`}>{supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width={supporter.id === 'carlos-araujo-arellano' ? 1125 : 300} height={supporter.id === 'carlos-araujo-arellano' ? 728 : 388} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}<span>IMPULSOR DEL PROYECTO DEPORTIVO</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}{supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}{supporter.communityWork && <div className="supporter-community"><strong>Labor social</strong><p>{supporter.communityWork}</p></div>}{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>
+        <article key={supporter.id} className="supporter-profile" aria-label={`Perfil de ${supporter.name}`}><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional: 19 victorias, 1 derrota, 16 por nocaut">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}${supporter.id === 'carlos-araujo-arellano' ? ' supporter-media--wide' : ''}`}>{supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width={supporter.id === 'carlos-araujo-arellano' ? 1125 : 300} height={supporter.id === 'carlos-araujo-arellano' ? 728 : 388} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}<span>IMPULSOR DEL PROYECTO DEPORTIVO</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}{supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}{supporter.communityWork && <div className="supporter-community"><strong>Trayectoria social y altruista</strong>{supporter.communityWork.map(item => <p key={item}>{item}</p>)}</div>}{supporter.socialValues && <div className="supporter-values"><strong>Valores que lo representan</strong><p>{supporter.socialValues.join(' · ')}</p></div>}{supporter.currentObjective && <div className="supporter-objective"><strong>Objetivo actual</strong><p>{supporter.currentObjective}</p></div>}{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>
       </div>
     </div>
   </div></section>;
