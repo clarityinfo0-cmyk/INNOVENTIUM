@@ -167,6 +167,8 @@ button { cursor:pointer; }
 .supporter-media--wide { aspect-ratio:3/2; overflow:visible; margin-bottom:34px; }
 .supporter-media--wide img { border-radius:12px; object-position:center center; }
 .supporter-media--wide>span { bottom:-27px; left:50%; transform:translateX(-50%); white-space:nowrap; }
+.supporter-media--hugo-crop { aspect-ratio:2/3; }
+.supporter-media--hugo-crop img { position:absolute; top:0; left:0; width:381%; max-width:none; height:auto; object-fit:initial; object-position:initial; transform:translateY(-24.8%); }
 
 .process-flow { position:relative; display:grid; grid-template-columns:repeat(6,1fr); margin-top:64px; }
 .process-flow::before { content:""; position:absolute; top:19px; left:5%; right:5%; height:1px; background:linear-gradient(90deg,var(--accent-gold),var(--secondary)); transform-origin:left; animation:lineReveal 1.3s ease both; animation-timeline:view(); animation-range:entry 10% cover 40%; }

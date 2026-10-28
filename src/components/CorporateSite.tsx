@@ -15,13 +15,15 @@ interface AthleticSupporter {
   name: string;
   alias?: string;
   role: string;
-  image: string;
+  image?: string;
+  imageLayout?: 'wide' | 'hugo-crop';
   record: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
   summary?: string;
   achievements?: string[];
   communityWork?: string[];
+  offRing?: string;
   socialValues?: string[];
   currentObjective?: string;
   videoUrl?: string;
@@ -61,6 +63,7 @@ const athleticSupporters: AthleticSupporter[] = [{
   alias: 'El Príncipe',
   role: 'Boxeador profesional · Campeón Latino CMB · Conferencista motivacional · Promotor social',
   image: '/carlos-araujo-championship.jpg',
+  imageLayout: 'wide',
   record: [
     { value: '19', label: '16 KO', tone: 'win' },
     { value: '1', label: 'Derrota', tone: 'loss' },
@@ -93,6 +96,66 @@ const athleticSupporters: AthleticSupporter[] = [{
   ],
   socialValues: ['Disciplina', 'Humildad', 'Respeto', 'Trabajo en equipo', 'Resiliencia', 'Altruismo', 'Orgullo mexicano'],
   currentObjective: 'Poner su imagen, trayectoria y legado al servicio de proyectos que generen un impacto positivo, empleos y oportunidades para la sociedad mexicana, inspirando a las nuevas generaciones a creer que sí se puede.',
+}, {
+  id: 'luis-carlo-armenta-cota',
+  name: 'Luis Carlo Armenta Cota',
+  role: 'Boxeador profesional',
+  image: '/luis-carlo-armenta-cota.jpg',
+  imageLayout: 'wide',
+  record: [
+    { value: '5', label: '4 KOs', tone: 'win' },
+    { value: '2', label: '1 KO', tone: 'loss' },
+    { value: '0', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso superligero' },
+    { label: 'Combates', value: '7 · 29 rounds' },
+    { label: 'Nocauts', value: '80% · 4 KOs' },
+    { label: 'Carrera', value: '2024–2026' },
+    { label: 'Debut', value: '23 febrero 2024' },
+  ],
+  identity: [
+    { label: 'Edad', value: '22 años' },
+    { label: 'ID deportivo', value: '1231725' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Residencia', value: 'Los Mochis, Sinaloa' },
+  ],
+}, {
+  id: 'hugo-fidel-cazares-linares',
+  name: 'Hugo Fidel Cázares Linares',
+  alias: 'El Increíble',
+  role: 'Exboxeador profesional · Campeón mundial OMB y AMB · Leyenda del boxeo mexicano',
+  image: '/hugo-cazares-boxrec.jpeg',
+  imageLayout: 'hugo-crop',
+  record: [
+    { value: '40', label: '27 KOs', tone: 'win' },
+    { value: '9', label: '4 KOs', tone: 'loss' },
+    { value: '2', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso supermosca' },
+    { label: 'Combates', value: '51 · 333 rounds' },
+    { label: 'Nocauts', value: '67.5% · 27 KOs' },
+    { label: 'Carrera', value: '1997–2016' },
+    { label: 'Debut', value: '23 febrero 1997' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '17085' },
+    { label: 'Nombre', value: 'Hugo Fidel Cázares Linares' },
+    { label: 'Alias', value: 'El Increíble' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Guardia', value: 'Ortodoxa' },
+    { label: 'Estatura', value: '165 cm' },
+    { label: 'Residencia', value: 'Los Mochis, Sinaloa' },
+  ],
+  summary: 'Originario de Los Mochis, Sinaloa, Hugo “El Increíble” Cázares construyó una carrera de 19 años en el boxeo profesional. Registró 40 victorias, 9 derrotas y 2 empates, y conquistó campeonatos mundiales en peso minimosca (OMB) y supermosca (AMB). Su técnica, contragolpe y fortaleza competitiva lo llevaron a destacar en escenarios internacionales.',
+  achievements: [
+    'Campeón mundial minimosca · Organización Mundial de Boxeo (OMB).',
+    'Campeón mundial supermosca · Asociación Mundial de Boxeo (AMB).',
+    'Ganó el título supermosca de la AMB ante Nobuo Nashiro en Osaka, Japón.',
+    'Campeón de la revista The Ring en peso minimosca.',
+  ],
+  offRing: 'Fuera del ring, disfruta del motociclismo y de las motocicletas Harley-Davidson, una afición que comparte su interés por la velocidad y la libertad.',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -126,7 +189,34 @@ const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
       <aside className="supporter-recognition"><p className="eyebrow">UN RECONOCIMIENTO A SU TRAYECTORIA</p><h3>Gracias por impulsar este proyecto.</h3>{supporterRecognition.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</aside>
       <div className="supporter-viewer">
         <div className="supporter-navigation"><button type="button" className="supporter-nav-button supporter-nav-button--previous" onClick={showPrevious} aria-label={`Ver perfil anterior: ${previousSupporter.name}`}><small>Impulsor anterior</small><strong>{previousSupporter.name}</strong></button><span aria-live="polite">{activeIndex + 1} / {athleticSupporters.length}</span><button type="button" className="supporter-nav-button supporter-nav-button--next" onClick={showNext} aria-label={`Ver siguiente impulsor: ${nextSupporter.name}`}><small>Siguiente impulsor</small><strong>{nextSupporter.name}</strong><ChevronRight size={17} /></button></div>
-        <article key={supporter.id} className="supporter-profile" aria-label={`Perfil de ${supporter.name}`}><header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header><div className="supporter-profile-body"><div className="supporter-summary"><div className="supporter-record" aria-label="Récord profesional: 19 victorias, 1 derrota, 16 por nocaut">{supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}</div><div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}${supporter.id === 'carlos-araujo-arellano' ? ' supporter-media--wide' : ''}`}>{supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width={supporter.id === 'carlos-araujo-arellano' ? 1125 : 300} height={supporter.id === 'carlos-araujo-arellano' ? 728 : 388} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}<span>IMPULSOR DEL PROYECTO DEPORTIVO</span></div></div><div className="supporter-data"><div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div><div className="supporter-tables"><dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl><dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl></div>{supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}{supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}{supporter.communityWork && <div className="supporter-community"><strong>Trayectoria social y altruista</strong>{supporter.communityWork.map(item => <p key={item}>{item}</p>)}</div>}{supporter.socialValues && <div className="supporter-values"><strong>Valores que lo representan</strong><p>{supporter.socialValues.join(' · ')}</p></div>}{supporter.currentObjective && <div className="supporter-objective"><strong>Objetivo actual</strong><p>{supporter.currentObjective}</p></div>}{supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}</div></div></article>
+  <article key={supporter.id} className="supporter-profile" aria-label={`Perfil de ${supporter.name}`}>
+    <header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header>
+    <div className="supporter-profile-body">
+      <div className="supporter-summary">
+        <div className="supporter-record" aria-label={`Récord profesional: ${supporter.record.map(item => `${item.value} ${item.label}`).join(', ')}`}>
+          {supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}
+        </div>
+        <div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}${supporter.imageLayout === 'wide' ? ' supporter-media--wide' : ''}${supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : ''}`}>
+          {supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width={supporter.imageLayout === 'wide' ? 1125 : supporter.imageLayout === 'hugo-crop' ? 1147 : 300} height={supporter.imageLayout === 'wide' ? 728 : supporter.imageLayout === 'hugo-crop' ? 767 : 388} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}
+          <span>IMPULSOR DEL PROYECTO DEPORTIVO</span>
+        </div>
+      </div>
+      <div className="supporter-data">
+        <div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div>
+        <div className="supporter-tables">
+          <dl>{supporter.performance.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+          <dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
+        </div>
+        {supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}
+        {supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}
+        {supporter.communityWork && <div className="supporter-community"><strong>Trayectoria social y altruista</strong>{supporter.communityWork.map(item => <p key={item}>{item}</p>)}</div>}
+        {supporter.offRing && <div className="supporter-community"><strong>Pasión fuera del ring</strong><p>{supporter.offRing}</p></div>}
+        {supporter.socialValues && <div className="supporter-values"><strong>Valores que lo representan</strong><p>{supporter.socialValues.join(' · ')}</p></div>}
+        {supporter.currentObjective && <div className="supporter-objective"><strong>Objetivo actual</strong><p>{supporter.currentObjective}</p></div>}
+        {supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}
+      </div>
+    </div>
+  </article>
       </div>
     </div>
   </div></section>;
