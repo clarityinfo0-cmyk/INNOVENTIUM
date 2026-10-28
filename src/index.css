@@ -113,6 +113,10 @@ button { cursor:pointer; }
 .supporter-image-pending span { display:grid; width:96px; height:96px; place-items:center; border:1px solid rgba(11,29,54,.15); border-radius:50%; background:#fff; color:var(--primary); font-size:2rem; font-weight:600; }
 .supporter-image-pending small { font-size:.8rem; }
 .supporter-bio,.supporter-community p { margin:18px 0 0; color:var(--text-soft); font-size:.94rem; line-height:1.7; }
+.supporter-story { margin-top:20px; }
+.supporter-story h4 { color:var(--primary); font-size:.82rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; }
+.supporter-story p { margin:10px 0 0; color:var(--text-soft); font-size:.9rem; line-height:1.7; }
+.supporter-legacy { margin:20px 0 0; padding:14px 16px; border-left:3px solid var(--accent-gold); background:#f5f7f9; color:var(--primary); font-family:var(--font-display); font-size:1rem; font-style:italic; line-height:1.6; }
 .supporter-achievements,.supporter-community { margin-top:20px; padding-top:16px; border-top:1px solid rgba(11,29,54,.12); }
 .supporter-achievements strong,.supporter-community strong { color:var(--primary); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; }
 .supporter-achievements ul { display:grid; gap:8px; margin:10px 0 0; padding-left:20px; color:var(--text-soft); font-size:.9rem; line-height:1.55; }

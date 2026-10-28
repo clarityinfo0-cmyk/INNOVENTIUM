@@ -21,9 +21,12 @@ interface AthleticSupporter {
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
   summary?: string;
+  storyHeading?: string;
+  storyParagraphs?: string[];
   achievements?: string[];
   communityWork?: string[];
   offRing?: string;
+  closingQuote?: string;
   socialValues?: string[];
   currentObjective?: string;
   videoUrl?: string;
@@ -148,14 +151,19 @@ const athleticSupporters: AthleticSupporter[] = [{
     { label: 'Estatura', value: '165 cm' },
     { label: 'Residencia', value: 'Los Mochis, Sinaloa' },
   ],
-  summary: 'Originario de Los Mochis, Sinaloa, Hugo “El Increíble” Cázares construyó una carrera de 19 años en el boxeo profesional. Registró 40 victorias, 9 derrotas y 2 empates, y conquistó campeonatos mundiales en peso minimosca (OMB) y supermosca (AMB). Su técnica, contragolpe y fortaleza competitiva lo llevaron a destacar en escenarios internacionales.',
-  achievements: [
-    'Campeón mundial minimosca · Organización Mundial de Boxeo (OMB).',
-    'Campeón mundial supermosca · Asociación Mundial de Boxeo (AMB).',
-    'Ganó el título supermosca de la AMB ante Nobuo Nashiro en Osaka, Japón.',
-    'Campeón de la revista The Ring en peso minimosca.',
+  summary: 'Hay boxeadores que pasan desapercibidos y otros que se ganan a pulso un apodo que define su trayectoria. Hugo “El Increíble” Cázares es recordado como un guerrero del ring: un peleador de gran potencia, técnica y espíritu competitivo, cuya carrera lo llevó a escenarios internacionales.',
+  storyHeading: 'Casta, guerrero y leyenda del ring',
+  storyParagraphs: [
+    'Originario de Los Mochis, Sinaloa, Cázares construyó una carrera profesional de 19 años, de 1997 a 2016. Registró 40 victorias, 9 derrotas y 2 empates, con 27 triunfos por nocaut. A lo largo de su trayectoria compitió en divisiones que fueron del peso mínimo al supergallo.',
+    'Su estilo combinaba inteligencia táctica, contragolpes precisos y una gran condición física. En el cuadrilátero se distinguió por su determinación y por no dar un combate por perdido.',
   ],
-  offRing: 'Fuera del ring, disfruta del motociclismo y de las motocicletas Harley-Davidson, una afición que comparte su interés por la velocidad y la libertad.',
+  achievements: [
+    'Campeón mundial minimosca de la Organización Mundial de Boxeo (OMB), título que defendió ante destacados rivales; también fue monarca de la revista The Ring en esta división.',
+    'Campeón mundial supermosca de la Asociación Mundial de Boxeo (AMB).',
+    'En Osaka, Japón, venció por decisión unánime al local Nobuo Nashiro para conquistar el campeonato mundial supermosca de la AMB.',
+  ],
+  offRing: 'Lejos del gimnasio y de los reflectores, disfruta del motociclismo y de las motocicletas Harley-Davidson. Para él, rodar representa una forma de libertad y una afinidad con la potencia, la disciplina y el estilo clásico.',
+  closingQuote: '“Una leyenda arriba del ring, un rebelde con estilo sobre el asfalto. Así es Hugo ‘El Increíble’ Cázares.”',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -208,9 +216,11 @@ const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
           <dl>{supporter.identity.map(fact => <div key={fact.label}><dt>{fact.label}</dt><dd>{fact.value}</dd></div>)}</dl>
         </div>
         {supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}
+        {supporter.storyHeading && <section className="supporter-story"><h4>{supporter.storyHeading}</h4>{supporter.storyParagraphs?.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>}
         {supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}
         {supporter.communityWork && <div className="supporter-community"><strong>Trayectoria social y altruista</strong>{supporter.communityWork.map(item => <p key={item}>{item}</p>)}</div>}
         {supporter.offRing && <div className="supporter-community"><strong>Pasión fuera del ring</strong><p>{supporter.offRing}</p></div>}
+        {supporter.closingQuote && <blockquote className="supporter-legacy">{supporter.closingQuote}</blockquote>}
         {supporter.socialValues && <div className="supporter-values"><strong>Valores que lo representan</strong><p>{supporter.socialValues.join(' · ')}</p></div>}
         {supporter.currentObjective && <div className="supporter-objective"><strong>Objetivo actual</strong><p>{supporter.currentObjective}</p></div>}
         {supporter.videoUrl ? <a href={supporter.videoUrl} className="supporter-video-link" target="_blank" rel="noopener noreferrer"><Play size={17} /><span><strong>Ver testimonio</strong><small>Conocer su mensaje de apoyo</small></span></a> : <div className="supporter-video-placeholder" aria-label="Espacio preparado para un futuro testimonio en video"><Play size={17} /><span><strong>Próximamente: testimonio</strong><small>El video se cargará únicamente cuando esté disponible</small></span></div>}
