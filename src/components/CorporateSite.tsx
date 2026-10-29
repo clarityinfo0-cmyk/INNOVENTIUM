@@ -17,7 +17,7 @@ interface AthleticSupporter {
   role: string;
   image?: string;
   gallery?: string[];
-  imageLayout?: 'wide' | 'hugo-crop' | 'portrait';
+  imageLayout?: 'wide' | 'hugo-crop' | 'portrait' | 'montiel-crop';
   record?: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
@@ -211,6 +211,56 @@ const athleticSupporters: AthleticSupporter[] = [{
   ],
   offRing: 'Lejos del gimnasio y de los reflectores, disfruta del motociclismo y de las motocicletas Harley-Davidson. Para él, rodar representa una forma de libertad y una afinidad con la potencia, la disciplina y el estilo clásico.',
   closingQuote: '“Una leyenda arriba del ring, un rebelde con estilo sobre el asfalto. Así es Hugo ‘El Increíble’ Cázares.”',
+}, {
+  id: 'fernando-montiel-martinez',
+  name: 'Fernando Montiel Martínez',
+  alias: 'Kochulito',
+  role: 'Exboxeador profesional · Campeón mundial en tres divisiones · Entrenador y promotor deportivo',
+  image: '/fernando-montiel-boxrec-source.jpeg',
+  imageLayout: 'montiel-crop',
+  record: [
+    { value: '54', label: '39 KOs', tone: 'win' },
+    { value: '6', label: '2 KOs', tone: 'loss' },
+    { value: '2', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso gallo' },
+    { label: 'Combates', value: '62 · 379 rounds' },
+    { label: 'Nocauts', value: '72.22% · 39 KOs' },
+    { label: 'Carrera profesional', value: '1996–2016' },
+    { label: 'Debut', value: '6 diciembre 1996' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '25209' },
+    { label: 'Nombre', value: 'Fernando Montiel Martínez' },
+    { label: 'Alias', value: 'Kochulito' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Estatura', value: '163 cm' },
+    { label: 'Alcance', value: '169 cm' },
+    { label: 'Guardia', value: 'Ortodoxa' },
+    { label: 'Origen y residencia', value: 'Los Mochis, Sinaloa' },
+  ],
+  summary: 'Fernando “Kochulito” Montiel Martínez es uno de los grandes nombres del boxeo sinaloense. Desde Los Mochis construyó una carrera de dos décadas, conquistó títulos mundiales en tres divisiones y, tras su retiro, encaminó su experiencia a la formación de nuevas generaciones.',
+  storyHeading: 'El orgullo de Los Mochis que convirtió el sacrificio en legado',
+  storyParagraphs: [
+    'Creció en una familia ligada al boxeo. Hijo de Manuel “Kochul” Montiel, entrenador y formador de campeones, aprendió desde joven que la disciplina, la constancia y la dignidad también forman parte de la victoria.',
+    'Debutó como profesional el 6 de diciembre de 1996. De 1996 a 2016 disputó 62 combates: obtuvo 54 victorias, 39 por nocaut, registró 6 derrotas y 2 empates.',
+    'Fue campeón mundial en tres divisiones: mosca de la OMB, supermosca de la OMB —en dos reinados— y gallo del CMB y la OMB. En total, su trayectoria reúne cinco coronas mundiales.',
+    'El 30 de abril de 2010, en el Nippon Budokan de Tokio, venció por nocaut técnico en el cuarto asalto al japonés Hozumi Hasegawa y conquistó el título mundial gallo del CMB. En ese periodo llegó a figurar entre los mejores libra por libra del mundo.',
+  ],
+  experienceHeading: 'Del ring a la formación de nuevas generaciones',
+  experience: [
+    'Después de colgar los guantes, mantuvo su compromiso con el boxeo desde Los Mochis. A través de Gym Koch y Kochul Pro participa en la formación de profesionales, amateurs y jóvenes que encuentran en el deporte una ruta de disciplina, carácter y nuevas oportunidades.',
+    'El legado familiar que comenzó en un pequeño gimnasio se convirtió en un espacio de entrenamiento y desarrollo para la comunidad. Su ejemplo recuerda que la experiencia de un campeón también puede servir para impulsar a quienes vienen detrás.',
+  ],
+  achievements: [
+    'Campeón mundial mosca de la Organización Mundial de Boxeo (OMB).',
+    'Campeón mundial supermosca de la OMB en dos reinados.',
+    'Campeón mundial gallo del Consejo Mundial de Boxeo (CMB) y la OMB.',
+    'Venció a Hozumi Hasegawa por nocaut técnico en Tokio para conquistar el título gallo del CMB.',
+  ],
+  socialValues: ['Disciplina', 'Constancia', 'Dignidad', 'Esfuerzo', 'Formación de jóvenes'],
+  currentObjective: 'Seguir poniendo su trayectoria al servicio del boxeo y de las nuevas generaciones desde Gym Koch y Kochul Pro, en Los Mochis.',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -233,7 +283,7 @@ const supporterRecognition = [
 const SupporterPhotos: React.FC<{ supporter: AthleticSupporter }> = ({ supporter }) => {
   const photos = supporter.gallery ?? (supporter.image ? [supporter.image] : []);
   const [activePhoto, setActivePhoto] = useState(0);
-  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : '';
+  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : supporter.imageLayout === 'montiel-crop' ? ' supporter-media--montiel-crop' : '';
 
   return <>
     <div className={`supporter-media${photos.length ? '' : ' supporter-media--placeholder'}${imageLayoutClass}`}>

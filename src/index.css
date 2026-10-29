@@ -175,6 +175,8 @@ button { cursor:pointer; }
 .supporter-media--hugo-crop img { position:absolute; top:0; left:0; width:381%; max-width:none; height:auto; object-fit:initial; object-position:initial; transform:translateY(-24.8%); }
 .supporter-media--portrait { aspect-ratio:5/8; }
 .supporter-media--portrait img { object-position:center center; }
+.supporter-media--montiel-crop { aspect-ratio:4/5; }
+.supporter-media--montiel-crop img { position:absolute; top:0; left:0; width:381%; max-width:none; height:auto; object-fit:initial; object-position:initial; transform:translate(-1.6%,-24.8%); }
 .supporter-gallery { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:9px; margin-top:10px; }
 .supporter-gallery-thumb { min-width:0; aspect-ratio:4/5; overflow:hidden; padding:0; border:2px solid transparent; border-radius:8px; background:#e9eef2; cursor:pointer; transition:border-color .2s ease,transform .2s ease; }
 .supporter-gallery-thumb:hover { transform:translateY(-2px); }
