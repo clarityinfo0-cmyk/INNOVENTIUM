@@ -16,14 +16,20 @@ interface AthleticSupporter {
   alias?: string;
   role: string;
   image?: string;
-  imageLayout?: 'wide' | 'hugo-crop';
-  record: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
+  gallery?: string[];
+  imageLayout?: 'wide' | 'hugo-crop' | 'portrait';
+  record?: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
   summary?: string;
   storyHeading?: string;
   storyParagraphs?: string[];
   achievements?: string[];
+  experienceHeading?: string;
+  experience?: string[];
+  practiceAreas?: string[];
+  philosophy?: string;
+  complementaryActivities?: string;
   communityWork?: string[];
   offRing?: string;
   closingQuote?: string;
@@ -124,6 +130,47 @@ const athleticSupporters: AthleticSupporter[] = [{
     { label: 'Residencia', value: 'Los Mochis, Sinaloa' },
   ],
 }, {
+  id: 'jose-luis-jimenez-arellano',
+  name: 'José Luis Jiménez Arellano',
+  role: 'Patinador activo · Entrenador de patinaje · Promotor deportivo',
+  image: '/jose-luis-jimenez-patinaje-01.jpeg',
+  gallery: [
+    '/jose-luis-jimenez-patinaje-01.jpeg',
+    '/jose-luis-jimenez-patinaje-02.jpeg',
+    '/jose-luis-jimenez-patinaje-03.jpeg',
+  ],
+  imageLayout: 'portrait',
+  performance: [
+    { label: 'Trayectoria', value: '32 años en el patinaje' },
+    { label: 'Experiencia como entrenador', value: '29 años' },
+    { label: 'Club Cobras LM', value: 'Fundador, presidente y entrenador · más de 13 años' },
+    { label: 'Niveles de formación', value: 'Iniciación, intermedio, avanzado y competitivo' },
+  ],
+  identity: [
+    { label: 'Origen', value: 'Guadalajara, Jalisco' },
+    { label: 'Residencia', value: 'Los Mochis, Sinaloa' },
+    { label: 'Especialidades', value: 'Patinaje de velocidad, urbano, freestyle y hockey' },
+    { label: 'Actividades', value: 'Patinaje sobre hielo, hockey sobre ruedas y patinaje agresivo' },
+  ],
+  summary: 'Patinador activo, entrenador y promotor deportivo con 32 años de trayectoria en el patinaje y 29 años de experiencia formando atletas. Originario de Guadalajara, Jalisco, y radicado en Los Mochis, Sinaloa, ha dedicado su carrera a impulsar este deporte y abrir espacios de desarrollo para niñas, niños y jóvenes.',
+  storyHeading: 'Una trayectoria dedicada al patinaje',
+  storyParagraphs: [
+    'Es fundador, presidente y entrenador de Club Cobras LM, proyecto con más de 13 años de trabajo en la formación deportiva. A lo largo de su trayectoria ha promovido el patinaje en Ahome y el norte de Sinaloa, y ha participado en la representación y organización de este deporte ante instancias como IMDA e ISDE.',
+    'También ha entrenado a la selección juvenil de patinaje de velocidad de Sinaloa. Su experiencia abarca desde la iniciación hasta el nivel competitivo, y diversas modalidades, entre ellas velocidad, patinaje urbano, freestyle, hockey sobre ruedas, hockey sobre hielo y patinaje agresivo.',
+  ],
+  experienceHeading: 'Formación y compromiso comunitario',
+  experience: [
+    'Su labor de enseñanza promueve la participación y la integración: adapta la práctica deportiva para que niñas, niños y jóvenes con distintas necesidades puedan desarrollar habilidades, confianza y sentido de comunidad.',
+  ],
+  practiceAreas: [
+    'Patinaje de velocidad',
+    'Patinaje urbano y freestyle',
+    'Hockey sobre ruedas y sobre hielo',
+    'Patinaje agresivo',
+  ],
+  philosophy: 'El patinaje forma personas, no solo atletas.',
+  complementaryActivities: 'Calistenia, boxeo, entrenamiento funcional, pesas, kayak y senderismo.',
+}, {
   id: 'hugo-fidel-cazares-linares',
   name: 'Hugo Fidel Cázares Linares',
   alias: 'El Increíble',
@@ -183,6 +230,24 @@ const supporterRecognition = [
   'Hoy, Innoventium se honra en contar con ustedes como impulsores de un sueño que comienza a hacerse realidad. Su nombre y su trayectoria quedarán ligados a este esfuerzo, y el reconocimiento será tan grande como el impacto que juntos lograremos.',
 ];
 
+const SupporterPhotos: React.FC<{ supporter: AthleticSupporter }> = ({ supporter }) => {
+  const photos = supporter.gallery ?? (supporter.image ? [supporter.image] : []);
+  const [activePhoto, setActivePhoto] = useState(0);
+  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : '';
+
+  return <>
+    <div className={`supporter-media${photos.length ? '' : ' supporter-media--placeholder'}${imageLayoutClass}`}>
+      {photos.length ? <img src={photos[activePhoto]} alt={`Fotografía ${activePhoto + 1} de ${supporter.name}`} loading="lazy" decoding="async" width={800} height={1280} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}
+      <span>IMPULSOR DEL PROYECTO DEPORTIVO</span>
+    </div>
+    {photos.length > 1 && <div className="supporter-gallery" role="group" aria-label={`Fotografías de ${supporter.name}`}>
+      {photos.map((photo, index) => <button key={photo} type="button" className={`supporter-gallery-thumb${index === activePhoto ? ' is-active' : ''}`} onClick={() => setActivePhoto(index)} aria-label={`Ver fotografía ${index + 1} de ${supporter.name}`} aria-pressed={index === activePhoto}>
+        <img src={photo} alt="" loading="lazy" decoding="async" width="84" height="112" />
+      </button>)}
+    </div>}
+  </>;
+};
+
 const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const supporter = athleticSupporters[activeIndex];
@@ -201,13 +266,10 @@ const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
     <header className="supporter-profile-header"><span>PERFIL PROFESIONAL</span><strong>{supporter.role}</strong></header>
     <div className="supporter-profile-body">
       <div className="supporter-summary">
-        <div className="supporter-record" aria-label={`Récord profesional: ${supporter.record.map(item => `${item.value} ${item.label}`).join(', ')}`}>
+        {supporter.record && <div className="supporter-record" aria-label={`Récord profesional: ${supporter.record.map(item => `${item.value} ${item.label}`).join(', ')}`}>
           {supporter.record.map(item => <div key={item.tone} className={`record-stat record-stat--${item.tone}`}><strong>{item.value}</strong><span>{item.label}</span></div>)}
-        </div>
-        <div className={`supporter-media${supporter.image ? '' : ' supporter-media--placeholder'}${supporter.imageLayout === 'wide' ? ' supporter-media--wide' : ''}${supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : ''}`}>
-          {supporter.image ? <img src={supporter.image} alt={`Retrato de ${supporter.name}`} loading="lazy" decoding="async" width={supporter.imageLayout === 'wide' ? 1125 : supporter.imageLayout === 'hugo-crop' ? 1147 : 300} height={supporter.imageLayout === 'wide' ? 728 : supporter.imageLayout === 'hugo-crop' ? 767 : 388} /> : <div className="supporter-image-pending" aria-label="Fotografía pendiente de agregar"><span>{supporter.name.split(' ').map(part => part[0]).slice(0, 2).join('')}</span><small>Fotografía pendiente</small></div>}
-          <span>IMPULSOR DEL PROYECTO DEPORTIVO</span>
-        </div>
+        </div>}
+        <SupporterPhotos key={supporter.id} supporter={supporter} />
       </div>
       <div className="supporter-data">
         <div className="supporter-identity"><p className="supporter-role">{supporter.role}</p><h3>{supporter.name}</h3>{supporter.alias && <p className="supporter-alias">“{supporter.alias}”</p>}</div>
@@ -217,6 +279,10 @@ const SupportersSection: React.FC<{ isOpen: boolean }> = ({ isOpen }) => {
         </div>
         {supporter.summary && <p className="supporter-bio">{supporter.summary}</p>}
         {supporter.storyHeading && <section className="supporter-story"><h4>{supporter.storyHeading}</h4>{supporter.storyParagraphs?.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</section>}
+        {supporter.experience && <div className="supporter-community"><strong>{supporter.experienceHeading ?? 'Experiencia'}</strong>{supporter.experience.map(item => <p key={item}>{item}</p>)}</div>}
+        {supporter.practiceAreas && <div className="supporter-achievements"><strong>Modalidades de práctica</strong><ul>{supporter.practiceAreas.map(item => <li key={item}>{item}</li>)}</ul></div>}
+        {supporter.philosophy && <blockquote className="supporter-legacy">“{supporter.philosophy}”</blockquote>}
+        {supporter.complementaryActivities && <div className="supporter-values"><strong>Preparación complementaria</strong><p>{supporter.complementaryActivities}</p></div>}
         {supporter.achievements && <div className="supporter-achievements"><strong>Títulos y reconocimientos</strong><ul>{supporter.achievements.map(item => <li key={item}>{item}</li>)}</ul></div>}
         {supporter.communityWork && <div className="supporter-community"><strong>Trayectoria social y altruista</strong>{supporter.communityWork.map(item => <p key={item}>{item}</p>)}</div>}
         {supporter.offRing && <div className="supporter-community"><strong>Pasión fuera del ring</strong><p>{supporter.offRing}</p></div>}
