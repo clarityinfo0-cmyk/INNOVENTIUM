@@ -17,7 +17,7 @@ interface AthleticSupporter {
   role: string;
   image?: string;
   gallery?: string[];
-  imageLayout?: 'wide' | 'hugo-crop' | 'portrait' | 'montiel-crop';
+  imageLayout?: 'wide' | 'hugo-crop' | 'portrait' | 'montiel-crop' | 'miguel-crop';
   record?: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
@@ -261,6 +261,48 @@ const athleticSupporters: AthleticSupporter[] = [{
   ],
   socialValues: ['Disciplina', 'Constancia', 'Dignidad', 'Esfuerzo', 'Formación de jóvenes'],
   currentObjective: 'Seguir poniendo su trayectoria al servicio del boxeo y de las nuevas generaciones desde Gym Koch y Kochul Pro, en Los Mochis.',
+}, {
+  id: 'miguel-guadalupe-beltran-ruiz',
+  name: 'Miguel Guadalupe Beltrán Ruiz',
+  alias: 'Barreterito Yael',
+  role: 'Exboxeador profesional · Campeón del torneo Campeón Azteca · Retador mundial',
+  image: '/miguel-beltran-boxrec-source.jpeg',
+  imageLayout: 'miguel-crop',
+  record: [
+    { value: '36', label: '25 KOs', tone: 'win' },
+    { value: '8', label: '3 KOs', tone: 'loss' },
+    { value: '0', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso ligero' },
+    { label: 'Combates', value: '45 · 207 rounds' },
+    { label: 'Nocauts', value: '69.44% · 25 KOs' },
+    { label: 'Carrera profesional', value: '2007–2025' },
+    { label: 'Debut', value: '2 febrero 2007' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '394325' },
+    { label: 'Nombre', value: 'Miguel Guadalupe Beltrán Ruiz' },
+    { label: 'Alias', value: 'Barreterito Yael' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Guardia', value: 'Ortodoxa' },
+    { label: 'Estatura', value: '170 cm' },
+    { label: 'Alcance', value: '165 cm' },
+    { label: 'Origen y residencia', value: 'Los Mochis, Sinaloa' },
+  ],
+  summary: 'Miguel Guadalupe Beltrán Ruiz, conocido como “Barreterito Yael”, es un boxeador orgullosamente mochitense. Construyó su trayectoria profesional con disciplina, carácter y determinación; conquistó el torneo Campeón Azteca y disputó oportunidades por campeonatos mundiales de la FIB y la OMB.',
+  storyHeading: 'El legado de un guerrero mochitense',
+  storyParagraphs: [
+    'En 2009 alcanzó un récord invicto de 22–0 y conquistó el torneo Campeón Azteca. Más adelante disputó oportunidades por títulos mundiales de la Federación Internacional de Boxeo (FIB) y la Organización Mundial de Boxeo (OMB), frente a rivales de alto nivel.',
+    'Su ficha deportiva registra una carrera entre 2007 y 2025, con 36 victorias —25 por nocaut— y 8 derrotas. Las victorias, los retos y los aprendizajes forman parte de una historia construida durante años de preparación y esfuerzo.',
+    'Entre los resultados destacados de su trayectoria está la victoria ante Abraham López por nocaut técnico, en septiembre de 2022. Su historia representa una referencia de perseverancia para las nuevas generaciones de Los Mochis y de Sinaloa.',
+  ],
+  achievements: [
+    'Campeón del torneo Campeón Azteca en 2009, cuando alcanzó una marca invicta de 22–0.',
+    'Disputó oportunidades por campeonatos mundiales de la FIB y la OMB.',
+    'Su última victoria profesional registrada fue ante Abraham López por nocaut técnico, en septiembre de 2022.',
+  ],
+  closingQuote: '“Los campeones se recuerdan por sus victorias; los grandes hombres también por su historia, su carácter y la huella que dejan.”',
 }];
 const values = [
   ['01', 'Integridad', 'Decidimos y actuamos con transparencia, rigor y respeto.'],
@@ -283,7 +325,7 @@ const supporterRecognition = [
 const SupporterPhotos: React.FC<{ supporter: AthleticSupporter }> = ({ supporter }) => {
   const photos = supporter.gallery ?? (supporter.image ? [supporter.image] : []);
   const [activePhoto, setActivePhoto] = useState(0);
-  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : supporter.imageLayout === 'montiel-crop' ? ' supporter-media--montiel-crop' : '';
+  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : supporter.imageLayout === 'montiel-crop' ? ' supporter-media--montiel-crop' : supporter.imageLayout === 'miguel-crop' ? ' supporter-media--miguel-crop' : '';
 
   return <>
     <div className={`supporter-media${photos.length ? '' : ' supporter-media--placeholder'}${imageLayoutClass}`}>
