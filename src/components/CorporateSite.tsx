@@ -17,7 +17,7 @@ interface AthleticSupporter {
   role: string;
   image?: string;
   gallery?: string[];
-  imageLayout?: 'wide' | 'hugo-crop' | 'portrait' | 'montiel-crop' | 'miguel-crop';
+  imageLayout?: 'wide' | 'hugo-crop' | 'portrait' | 'montiel-crop' | 'miguel-crop' | 'humberto-crop';
   record?: { value: string; label: string; tone: 'win' | 'loss' | 'draw' }[];
   performance: { label: string; value: string }[];
   identity: { label: string; value: string }[];
@@ -39,6 +39,49 @@ interface AthleticSupporter {
 }
 
 const athleticSupporters: AthleticSupporter[] = [{
+  id: 'humberto-armando-soto-ochoa',
+  name: 'Humberto Armando Soto Ochoa',
+  alias: 'La Zorrita',
+  role: 'Exboxeador profesional · Excampeón mundial en tres divisiones · Leyenda del boxeo mexicano',
+  image: '/humberto-soto-boxrec-source.jpeg',
+  imageLayout: 'humberto-crop',
+  record: [
+    { value: '69', label: '37 KOs', tone: 'win' },
+    { value: '10', label: '3 KOs', tone: 'loss' },
+    { value: '2', label: 'Empates', tone: 'draw' },
+  ],
+  performance: [
+    { label: 'División', value: 'Peso ligero' },
+    { label: 'Combates', value: '82 · 594 asaltos' },
+    { label: 'Nocauts', value: '53.62% · 37 KOs' },
+    { label: 'Carrera profesional', value: '1997–2019' },
+    { label: 'Debut', value: '26 septiembre 1997' },
+  ],
+  identity: [
+    { label: 'ID deportivo', value: '18783' },
+    { label: 'Nombre', value: 'Humberto Armando Soto Ochoa' },
+    { label: 'Alias', value: 'La Zorrita' },
+    { label: 'Nacionalidad', value: 'México' },
+    { label: 'Guardia', value: 'Ortodoxa' },
+    { label: 'Estatura', value: '172 cm' },
+    { label: 'Alcance', value: '175 cm' },
+    { label: 'Lugar de nacimiento', value: 'Los Mochis, Sinaloa' },
+    { label: 'Residencia', value: 'Tijuana, Baja California' },
+  ],
+  summary: 'Humberto “La Zorrita” Soto Ochoa, originario de Los Mochis, construyó una extensa carrera profesional y alcanzó campeonatos mundiales en tres divisiones. Es recordado por su inteligencia táctica, su contragolpe y una trayectoria de 82 combates.',
+  storyHeading: 'La leyenda mochitense que conquistó tres divisiones',
+  storyParagraphs: [
+    'Humberto Armando Soto Ochoa inició su carrera profesional el 26 de septiembre de 1997. Su trayectoria, que se extendió hasta 2019, reunió 82 combates: 69 victorias —37 por nocaut—, 10 derrotas y 2 empates.',
+    'El Consejo Mundial de Boxeo lo reconoce como excampeón mundial en tres divisiones. Sus registros incluyen los títulos superpluma y ligero del CMB, además del campeonato interino pluma. Su lectura del rival, sus contragolpes y su capacidad para ajustar el ritmo distinguieron su estilo sobre el ring.',
+    'La semblanza compartida por el equipo destaca el vínculo de Soto con Los Mochis y la disciplina que sostuvo durante su carrera. Su historia deportiva representa años de esfuerzo y perseverancia para las nuevas generaciones.',
+  ],
+  achievements: [
+    'Excampeón mundial del CMB en tres divisiones.',
+    'Campeón mundial superpluma del CMB (2008–2009).',
+    'Campeón mundial ligero del CMB (2010–2011).',
+    'Campeón interino pluma del CMB (2005–2006).',
+  ],
+}, {
   id: 'luis-angel-castillo-soto',
   name: 'Luis Ángel Castillo Soto',
   alias: 'Flechita',
@@ -325,7 +368,7 @@ const supporterRecognition = [
 const SupporterPhotos: React.FC<{ supporter: AthleticSupporter }> = ({ supporter }) => {
   const photos = supporter.gallery ?? (supporter.image ? [supporter.image] : []);
   const [activePhoto, setActivePhoto] = useState(0);
-  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : supporter.imageLayout === 'montiel-crop' ? ' supporter-media--montiel-crop' : supporter.imageLayout === 'miguel-crop' ? ' supporter-media--miguel-crop' : '';
+  const imageLayoutClass = supporter.imageLayout === 'wide' ? ' supporter-media--wide' : supporter.imageLayout === 'hugo-crop' ? ' supporter-media--hugo-crop' : supporter.imageLayout === 'portrait' ? ' supporter-media--portrait' : supporter.imageLayout === 'montiel-crop' ? ' supporter-media--montiel-crop' : supporter.imageLayout === 'miguel-crop' ? ' supporter-media--miguel-crop' : supporter.imageLayout === 'humberto-crop' ? ' supporter-media--humberto-crop' : '';
 
   return <>
     <div className={`supporter-media${photos.length ? '' : ' supporter-media--placeholder'}${imageLayoutClass}`}>
